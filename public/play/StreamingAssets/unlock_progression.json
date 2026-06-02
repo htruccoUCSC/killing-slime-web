@@ -1,0 +1,129 @@
+{
+  "startingUnits": [
+    "stick_01",
+    "rock_01"
+  ],
+    "unlockSequence": [
+        {
+            "waveNumber": 2,
+            "unitID": "squire_01",
+            "unlockMessage": "New Unit Unlocked: Squire!"
+        },
+        {
+            "waveNumber": 3,
+            "unitID": "orc_01",
+            "unlockMessage": "New Unit Unlocked: Orc!"
+        },
+        {
+            "waveNumber": 4,
+            "unitID": "archer_01",
+            "unlockMessage": "New Unit Unlocked: Archer!"
+        },
+        {
+            "waveNumber": 5,
+            "unitID": "bow_01",
+            "unlockMessage": "New Unit Unlocked: Bowman!"
+        },
+        {
+            "waveNumber": 6,
+            "unitID": "mino_01",
+            "unlockMessage": "New Unit Unlocked: Minotaur!"
+        },
+        {
+            "waveNumber": 7,
+            "unitID": "tre_01",
+            "unlockMessage": "New Unit Unlocked: Trebuchet!"
+        },
+        {
+            "waveNumber": 8,
+            "unitID": "hero_01",
+            "unlockMessage": "New Unit Unlocked: Hero!"
+        },
+        {
+            "waveNumber": 10,
+            "unitID": "boomer_01",
+            "unlockMessage": "New Unit Unlocked: Boomeranger!"
+        },
+        {
+            "waveNumber": 11,
+            "unitID": "gen_01",
+            "unlockMessage": "New Unit Unlocked: Generator!"
+        },
+        {
+            "waveNumber": 12,
+            "unitID": "artillery_01",
+            "unlockMessage": "New Unit Unlocked: Artillery!"
+        },
+        {
+            "waveNumber": 13,
+            "unitID": "amini_01",
+            "unlockMessage": "New Unit Unlocked: Mini-Gunner!"
+        },
+        {
+            "waveNumber": 14,
+            "unitID": "snip_01",
+            "unlockMessage": "New Unit Unlocked: Sniper!"
+        },
+        {
+            "waveNumber": 15,
+            "unitID": "foot_01",
+            "unlockMessage": "New Unit Unlocked: Foot Trooper!"
+        },
+        {
+            "waveNumber": 16,
+            "unitID": "bounty_01",
+            "unlockMessage": "New Unit Unlocked: Bounty Hunter!"
+        },
+        {
+            "waveNumber": 17,
+            "unitID": "riot_01",
+            "unlockMessage": "New Unit Unlocked: Riot Trooper!"
+        },
+        {
+            "waveNumber": 18,
+            "unitID": "mech_01",
+            "unlockMessage": "New Unit Unlocked: Mech!"
+        },
+        {
+            "waveNumber": 20,
+            "unitID": "laser_01",
+            "unlockMessage": "New Unit Unlocked: Laser Trooper!"
+        },
+        {
+            "waveNumber": 21,
+            "unitID": "martian_01",
+            "unlockMessage": "New Unit Unlocked: Martian!"
+        },
+        {
+            "waveNumber": 22,
+            "unitID": "nest_01",
+            "unlockMessage": "New Unit Unlocked: Facehugger Nest!"
+        },
+        {
+            "waveNumber": 23,
+            "unitID": "spores_01",
+            "unlockMessage": "New Unit Unlocked: Spores!"
+        },
+        {
+            "waveNumber": 24,
+            "unitID": "wiz_01",
+            "unlockMessage": "New Unit Unlocked: Wizard!"
+        },
+        {
+            "waveNumber": 25,
+            "unitID": "unic_01",
+            "unlockMessage": "New Unit Unlocked: Unicorn!"
+        },
+        {
+            "waveNumber": 26,
+            "unitID": "stim_01",
+            "unlockMessage": "New Unit Unlocked: Stimbot!"
+        },
+        {
+            "waveNumber": 30,
+            "unitID": "orbital_01",
+            "unlockMessage": "New Unit Unlocked: Orbital Laser!"
+        }
+
+    ]
+}

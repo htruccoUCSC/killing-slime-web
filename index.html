@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Killing Slime - Retro Arcade Sensation - Official Website</title>
+    <meta name="description" content="Official website for Killing Slime, a lane-based tower defense game where players defend the timeline from invading slimes.">
+    <link rel="stylesheet" href="index.css">
+    <link rel="shortcut icon" href="assets/slime_cursor.png" type="image/png">
+</head>
+<body>
+
+    <div class="wrapper">
+        
+        <!-- Retro Header -->
+        <header class="site-header">
+            <div class="header-banner">
+                <!-- Check if the generated image exists, otherwise fallback to stylized text -->
+                <img src="assets/logo.png" alt="Killing Slime" class="logo-img" onerror="this.style.display='none'; document.getElementById('logo-text').style.display='block';">
+                <div id="logo-text" class="logo-fallback" style="display: none;">Killing Slime</div>
+                <div class="subtitle">A Lane-Based Tower Defense Game</div>
+            </div>
+
+            <!-- Central Control Bar (Synthesizer Player) -->
+            <div class="control-bar" style="justify-content: center; max-width: 600px;">
+                <div class="audio-player" style="display: flex; align-items: center; gap: 10px;">
+                    <button class="audio-btn" id="play-synth-btn">
+                        <span id="play-icon">[ &gt; ]</span> <span id="play-text">PLAY SOUNDTRACK</span>
+                    </button>
+                    <button class="audio-btn" id="switch-track-btn" style="display: none;">
+                        SWITCH TRACK
+                    </button>
+                    <div class="volume-control" style="display: flex; align-items: center; gap: 6px; margin: 0 5px;">
+                        <span style="font-family: 'VT323', monospace; color: var(--slime-neon); font-size: 0.95rem; line-height: 1;">VOL:</span>
+                        <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.5" class="retro-slider">
+                    </div>
+                    <canvas class="visualizer-canvas" id="audio-visualizer"></canvas>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="site-nav">
+            <button class="nav-tab active" data-tab="home">Home</button>
+            <button class="nav-tab" data-tab="play">Play Game</button>
+            <button class="nav-tab" data-tab="devlogs">Devlogs</button>
+            <button class="nav-tab" data-tab="gallery">Media Gallery</button>
+        </nav>
+
+        <!-- Main Portal Container -->
+        <main class="main-container">
+            
+            <!-- Left Side: Dynamic Tab Contents -->
+            <section class="main-content">
+                
+                <!-- Tab 1: Home (Game Marketing & Overview) -->
+                <div id="tab-home" class="tab-content active">
+                    <div class="console-panel neon-slime">
+                        <div class="panel-header">
+                            <span class="animated-slime-sprite mini" style="margin-right: 8px;"></span>
+                            <span>About the Game</span>
+                        </div>
+
+                        <div class="about-hero">
+                            <div class="hero-image-wrapper">
+                                <span class="animated-big-slime"></span>
+                            </div>
+                            <div class="hero-desc">
+                                <h2 class="pulsing-slime" style="color: var(--slime-neon); font-family: 'Orbitron', sans-serif;">Slimes From Another Universe!</h2>
+                                <p style="margin-top: 10px;">
+                                    In <strong>Killing Slime</strong>, you the player are solely responsible for defending the timeline from invading slimes from another another universe. Defend the past, present, and future by fortifying your position with different versions of your chud friend from different timelines. Choose the right units, augments, items, and faction synergies to survive the onslaught of slimes.
+                                </p>
+                            </div>
+                        </div>
+
+                        <h2 style="font-family: 'Orbitron', sans-serif; font-size: 1.1rem; color: #fff; border-bottom: 1px dashed #333; padding-bottom: 8px; margin: 20px 0 15px 0;">Featuring!</h2>
+                        
+                        <div class="feature-grid">
+                            <div class="feature-card">
+                                <span class="animated-slime-sprite" style="margin-right: 12px; flex-shrink: 0;"></span>
+                                <div>
+                                    <h3>Lane-Based Tower Defense</h3>
+                                    <p>Place units along lanes to defend against waves of invading slimes.</p>
+                                </div>
+                            </div>
+                            <div class="feature-card">
+                                <span class="animated-slime-sprite" style="margin-right: 12px; flex-shrink: 0; filter: hue-rotate(270deg);"></span>
+                                <div>
+                                    <h3>Factions From Different Timelines</h3>
+                                    <p>Choose from a variety of factions, each with unique abilities and synergies, representing different eras of time.</p>
+                                </div>
+                            </div>
+                            <div class="feature-card">
+                                <span class="animated-slime-sprite" style="margin-right: 12px; flex-shrink: 0; filter: hue-rotate(90deg);"></span>
+                                <div>
+                                    <h3>Augments</h3>
+                                    <p>Every three rounds choose from a selection of powerful augments to enhance your units.</p>
+                                </div>
+                            </div>
+                            <div class="feature-card">
+                                <span class="animated-slime-sprite" style="margin-right: 12px; flex-shrink: 0; filter: hue-rotate(180deg);"></span>
+                                <div>
+                                    <h3>Chuds</h3>
+                                    <p>A seemingly infinite army of your chud friend is at your disposal. They each have lived a different life, in a different time period, providing unique abilities and support.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Requirements Table -->
+                        <div class="requirements-panel">
+                            <h3>Box Specs (Minimum System Requirements)</h3>
+                            <div class="req-grid">
+                                <div class="req-item"><strong>OS:</strong> Any</div>
+                                <div class="req-item"><strong>Memory:</strong> 512 MB RAM</div>
+                                <div class="req-item"><strong>Processor:</strong> 1.6 GHz Intel Pentium or better</div>
+                                <div class="req-item"><strong>Browser:</strong> Any modern browser</div>
+                            </div>
+                        </div>
+
+                        <!-- Call To Action -->
+                        <div class="cta-container">
+                            <button class="giant-btn" onclick="document.querySelector('[data-tab=play]').click()">PLAY FREE IN BROWSER NOW!</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Play Game (WebGL Arcade Cabinet) -->
+                <div id="tab-play" class="tab-content">
+                    <div class="console-panel neon-slime">
+                        <div class="panel-header">
+                            <span>Arcade Cabinet</span>
+                        </div>
+
+                        <!-- Arcade Border and screen bezel -->
+                        <div class="arcade-container">
+                            <div class="arcade-bezel crt-active" id="arcade-screen">
+                                <iframe src="public/play/index.html" class="game-iframe" id="game-frame" allow="autoplay; fullscreen"></iframe>
+                                <div class="crt-overlay"></div>
+                                <div class="crt-vignette"></div>
+                            </div>
+
+                            <div class="arcade-controls">
+                                <button class="crt-toggle active" id="crt-toggle-btn">CRT SCANLINES: ON</button>
+                                <span style="font-family: 'VT323', monospace; color: #555; font-size: 1rem;">CABINET ID: KS-2012-G</span>
+                                <button class="crt-toggle" onclick="document.getElementById('game-frame').src=document.getElementById('game-frame').src">REBOOT GAME</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Devlogs -->
+                <div id="tab-devlogs" class="tab-content">
+                    <div class="console-panel neon-purple">
+                        <div class="panel-header">
+                            <span>Project Logs</span>
+                        </div>
+
+                        <div class="devlog-list" id="dynamic-devlog-list">
+                            <div style="font-family: monospace; text-align: center; color: var(--text-muted); padding: 30px;">
+                                [ CONNECTING... ]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 4: Media Gallery -->
+                <div id="tab-gallery" class="tab-content">
+                    <div class="console-panel neon-slime">
+                        <div class="panel-header">
+                            <span>Gameplay Gallery & Renders</span>
+                        </div>
+
+                        <div class="media-slider-container">
+                            <button class="slider-nav slider-prev" id="slider-prev-btn">&lt;</button>
+                            
+                            <div class="media-slide active" data-slide="0">
+                                <img src="assets/screenshot1.png" alt="Slashing Slimes" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22 viewBox=%220 0 600 400%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%23111%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-family=%22monospace%22 font-size=%2220%22>Gameplay Screenshot 1</text></svg>';">
+                                <div class="slide-caption">Our main menu splash!</div>
+                            </div>
+                            
+                            <div class="media-slide" data-slide="1">
+                                <img src="assets/screenshot2.png" alt="Upgrade Armory" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22 viewBox=%220 0 600 400%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%23111%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-family=%22monospace%22 font-size=%2220%22>Gameplay Screenshot 2</text></svg>';">
+                                <div class="slide-caption">Lane-Based Tower Defense Gameplay: Place units in lanes to defend against slimes coming from the portals on the right!</div>
+                            </div>
+                            
+                            <div class="media-slide" data-slide="2">
+                                <img src="assets/screenshot3.png" alt="Purple Slime Boss Battle" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22 viewBox=%220 0 600 400%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%23111%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-family=%22monospace%22 font-size=%2220%22>Gameplay Screenshot 3</text></svg>';">
+                                <div class="slide-caption">Augment Selection: Choose from one of three offerings to power up your units!</div>
+                            </div>
+
+                            <button class="slider-nav slider-next" id="slider-next-btn">&gt;</button>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </section>
+
+
+        </main>
+
+        <!-- Footer badging panel -->
+        <div class="badges-container">
+            <div class="retro-badges-panel">
+                <div class="retro-badge-wrapper" title="Get Firefox for the best experience!">
+                    <svg class="retro-badge" viewBox="0 0 88 31" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="88" height="31" fill="#111" />
+                        <rect width="88" height="31" fill="none" stroke="#ff6600" stroke-width="2" />
+                        <rect width="88" height="15" fill="#ff6600" />
+                        <text x="44" y="11" fill="#000" font-family="'Press Start 2P', cursive" font-size="5" text-anchor="middle" font-weight="bold">USING</text>
+                        <text x="44" y="24" fill="#ff6600" font-family="'Press Start 2P', cursive" font-size="5" text-anchor="middle">WebGL</text>
+                    </svg>
+                </div>
+                <div class="retro-badge-wrapper" title="Unity Powered Game!">
+                    <svg class="retro-badge" viewBox="0 0 88 31" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="88" height="31" fill="#111" />
+                        <rect width="88" height="31" fill="none" stroke="#39ff14" stroke-width="2" />
+                        <rect width="88" height="15" fill="#39ff14" />
+                        <text x="44" y="11" fill="#000" font-family="'Press Start 2P', cursive" font-size="5" text-anchor="middle" font-weight="bold">MADE IN</text>
+                        <text x="44" y="24" fill="#39ff14" font-family="'Press Start 2P', cursive" font-size="5" text-anchor="middle">UNITY</text>
+                    </svg>
+                </div>
+                <div class="retro-badge-wrapper" title="Best Viewed in 1024x768 Resolution!">
+                    <svg class="retro-badge" viewBox="0 0 88 31" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="88" height="31" fill="#000" />
+                        <rect width="88" height="31" fill="none" stroke="#555" stroke-width="2" />
+                        <text x="44" y="13" fill="#888" font-family="'Press Start 2P', cursive" font-size="5" text-anchor="middle">VIEW AT</text>
+                        <text x="44" y="23" fill="#fff" font-family="'Press Start 2P', cursive" font-size="4" text-anchor="middle">1024 X 768</text>
+                    </svg>
+                </div>
+            </div>
+
+            <footer class="site-footer">
+                <p>&copy; 2026 Killing Slime Studio.</p>
+            </footer>
+        </div>
+
+    </div>
+
+    <!-- Script Block for UI, Navigation, local storage components and procedural Audio Synthesizer -->
+    <script src="index.js" defer></script>
+</body>
+</html>
