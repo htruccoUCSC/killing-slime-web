@@ -61,6 +61,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (arcadeScreen) {
             arcadeScreen.classList.add('mobile-fullscreen');
             handleMobileOrientation();
+
+            // Trigger browser native fullscreen to hide browser address bar
+            try {
+                if (arcadeScreen.requestFullscreen) {
+                    arcadeScreen.requestFullscreen();
+                } else if (arcadeScreen.webkitRequestFullscreen) {
+                    arcadeScreen.webkitRequestFullscreen();
+                } else if (arcadeScreen.msRequestFullscreen) {
+                    arcadeScreen.msRequestFullscreen();
+                }
+            } catch (err) {
+                console.warn("Fullscreen request failed:", err);
+            }
         }
         
         // Re-inject responsive styles to ensure footer state matches the mobile play state
@@ -72,6 +85,22 @@ document.addEventListener('DOMContentLoaded', () => {
         if (arcadeScreen) {
             arcadeScreen.classList.remove('mobile-fullscreen');
             arcadeScreen.classList.remove('portrait-rotated');
+
+            // Exit native fullscreen if active
+            try {
+                const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
+                if (isFullscreen) {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    } else if (document.webkitExitFullscreen) {
+                        document.webkitExitFullscreen();
+                    } else if (document.msExitFullscreen) {
+                        document.msExitFullscreen();
+                    }
+                }
+            } catch (err) {
+                console.warn("Exit fullscreen failed:", err);
+            }
         }
         
         // Restore desktop iframe sizing properties
@@ -93,8 +122,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Sync state back if user exits native fullscreen manually via device hardware back or swiping
+    function handleFullscreenChange() {
+        const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
+        if (!isFullscreen && document.body.classList.contains('mobile-play-active')) {
+            deactivateMobilePlay();
+            const homeTab = document.querySelector('.nav-tab[data-tab="home"]');
+            if (homeTab) homeTab.click();
+        }
+    }
+
     window.addEventListener('resize', handleMobileOrientation);
     window.addEventListener('orientationchange', handleMobileOrientation);
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
 
     // 1. TABS SYSTEM
     const navTabs = document.querySelectorAll('.nav-tab');

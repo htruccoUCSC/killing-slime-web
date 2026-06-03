@@ -1561,25 +1561,30 @@ body.mobile-play-active {
     display: none !important;
 }
 
-/* Float exit button in corner */
+/* Circular green close X button in corner (sits over letterbox/pillarbox black bars) */
 #arcade-screen.mobile-fullscreen .mobile-exit-btn {
     display: flex;
     align-items: center;
     justify-content: center;
     position: absolute;
-    top: 15px;
-    left: 15px;
+    top: 10px;
+    right: 10px;
+    left: auto;
     z-index: 10000000;
-    background: rgba(0, 0, 0, 0.75);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
     border: 2px solid var(--slime-neon);
     color: var(--slime-neon);
-    font-family: 'Press Start 2P', cursive;
-    font-size: 0.7rem;
-    padding: 8px 12px;
-    border-radius: 6px;
+    font-family: Arial, sans-serif; /* simple clean cross character font */
+    font-size: 1.3rem;
+    font-weight: bold;
+    line-height: 1;
     cursor: pointer;
     box-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
     transition: all 0.2s ease;
+    padding: 0 0 2px 0; /* subtle shift to center the unicode cross */
 }
 
 #arcade-screen.mobile-fullscreen .mobile-exit-btn:hover {
