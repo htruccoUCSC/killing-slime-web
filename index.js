@@ -62,17 +62,44 @@ document.addEventListener('DOMContentLoaded', () => {
             arcadeScreen.classList.add('mobile-fullscreen');
             handleMobileOrientation();
 
-            // Trigger browser native fullscreen to hide browser address bar
+            // Trigger browser native fullscreen or use Safari address bar scroll hack
+            let fullscreenTriggered = false;
             try {
                 if (arcadeScreen.requestFullscreen) {
                     arcadeScreen.requestFullscreen();
+                    fullscreenTriggered = true;
                 } else if (arcadeScreen.webkitRequestFullscreen) {
                     arcadeScreen.webkitRequestFullscreen();
+                    fullscreenTriggered = true;
                 } else if (arcadeScreen.msRequestFullscreen) {
                     arcadeScreen.msRequestFullscreen();
+                    fullscreenTriggered = true;
                 }
             } catch (err) {
-                console.warn("Fullscreen request failed:", err);
+                console.warn("Fullscreen request failed, falling back to scroll hack:", err);
+            }
+
+            // iOS Safari scroll hack fallback if native Fullscreen API wasn't triggered
+            if (!fullscreenTriggered) {
+                try {
+                    // Temporarily expand body height to trigger address bar minimize on scroll
+                    document.documentElement.style.height = '120%';
+                    document.body.style.setProperty('height', '120%', 'important');
+                    document.body.style.setProperty('overflow', 'auto', 'important');
+                    
+                    setTimeout(() => {
+                        window.scrollTo(0, 1);
+                        setTimeout(() => {
+                            // Lock height and viewport scrollability back
+                            document.documentElement.style.height = '100%';
+                            document.body.style.setProperty('height', '100%', 'important');
+                            document.body.style.setProperty('overflow', 'hidden', 'important');
+                            handleMobileOrientation();
+                        }, 300);
+                    }, 100);
+                } catch (err) {
+                    console.warn("iOS URL bar scroll hack failed:", err);
+                }
             }
         }
         
@@ -82,6 +109,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function deactivateMobilePlay() {
         document.body.classList.remove('mobile-play-active');
+        
+        // Restore document element height and body properties from scroll hack overrides
+        try {
+            document.documentElement.style.height = '';
+            document.body.style.removeProperty('height');
+            document.body.style.removeProperty('overflow');
+        } catch (e) {}
+
         if (arcadeScreen) {
             arcadeScreen.classList.remove('mobile-fullscreen');
             arcadeScreen.classList.remove('portrait-rotated');
