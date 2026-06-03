@@ -8,6 +8,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const arcadeScreen = document.getElementById('arcade-screen');
 
+    function updateGameFrameSize() {
+        const gameFrame = document.getElementById('game-frame');
+        if (!gameFrame) return;
+
+        if (!document.body.classList.contains('mobile-play-active')) {
+            // Restore desktop sizes
+            gameFrame.style.removeProperty('width');
+            gameFrame.style.removeProperty('height');
+            return;
+        }
+
+        const isPortrait = window.innerHeight > window.innerWidth;
+        const lw = isPortrait ? window.innerHeight : window.innerWidth;
+        const lh = isPortrait ? window.innerWidth : window.innerHeight;
+
+        let targetWidth, targetHeight;
+        if (lw / lh > 16 / 9) {
+            // Screen is wider than 16:9 (pillarbox)
+            targetHeight = lh;
+            targetWidth = lh * (16 / 9);
+        } else {
+            // Screen is taller than 16:9 (letterbox)
+            targetWidth = lw;
+            targetHeight = lw * (9 / 16);
+        }
+
+        gameFrame.style.setProperty('width', `${targetWidth}px`, 'important');
+        gameFrame.style.setProperty('height', `${targetHeight}px`, 'important');
+    }
+
     function handleMobileOrientation() {
         if (!document.body.classList.contains('mobile-play-active')) return;
         if (!arcadeScreen) return;
@@ -17,6 +47,9 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             arcadeScreen.classList.remove('portrait-rotated');
         }
+        
+        // Update game frame size to preserve 16:9 aspect ratio
+        updateGameFrameSize();
     }
 
     function activateMobilePlay() {
@@ -27,6 +60,9 @@ document.addEventListener('DOMContentLoaded', () => {
             arcadeScreen.classList.add('mobile-fullscreen');
             handleMobileOrientation();
         }
+        
+        // Re-inject responsive styles to ensure footer state matches the mobile play state
+        injectResponsiveStyles();
     }
 
     function deactivateMobilePlay() {
@@ -35,6 +71,12 @@ document.addEventListener('DOMContentLoaded', () => {
             arcadeScreen.classList.remove('mobile-fullscreen');
             arcadeScreen.classList.remove('portrait-rotated');
         }
+        
+        // Restore desktop iframe sizing properties
+        updateGameFrameSize();
+        
+        // Re-inject responsive styles to restore footer on desktop view
+        injectResponsiveStyles();
     }
 
     // Exit Game button handler
@@ -93,8 +135,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. DYNAMIC IFRAME INJECTOR (Solves Unity Build Overwrites!)
     const gameFrame = document.getElementById('game-frame');
+    let injectResponsiveStyles = () => {};
     if (gameFrame) {
-        const injectResponsiveStyles = () => {
+        injectResponsiveStyles = () => {
             try {
                 const doc = gameFrame.contentDocument || gameFrame.contentWindow.document;
                 if (!doc) return;
@@ -150,8 +193,37 @@ document.addEventListener('DOMContentLoaded', () => {
                         float: none !important;
                         margin: 0 !important;
                     }
+                    
+                    /* Hide footer on smaller viewport / mobile views */
+                    @media (max-width: 1024px) {
+                        #unity-footer {
+                            display: none !important;
+                        }
+                        #unity-container.unity-desktop #unity-canvas {
+                            height: 100% !important;
+                        }
+                    }
                 `;
                 doc.head.appendChild(style);
+
+                // Defensive check to hide footer if parent is in mobile play mode
+                try {
+                    if (window.parent && window.parent.document && window.parent.document.body.classList.contains('mobile-play-active')) {
+                        const forceHideStyle = doc.createElement('style');
+                        forceHideStyle.id = "force-hide-footer-override";
+                        forceHideStyle.textContent = `
+                            #unity-footer {
+                                display: none !important;
+                            }
+                            #unity-container.unity-desktop #unity-canvas {
+                                height: 100% !important;
+                            }
+                        `;
+                        doc.head.appendChild(forceHideStyle);
+                    }
+                } catch (e) {
+                    console.warn("Could not read parent document state due to origin policy, falling back to CSS media query.", e);
+                }
 
                 // Block Unity's absolute JS overrides by redefining style values
                 const canvas = doc.querySelector('#unity-canvas');

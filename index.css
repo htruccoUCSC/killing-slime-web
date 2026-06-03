@@ -1548,6 +1548,14 @@ body.mobile-play-active {
     background: #000;
 }
 
+#arcade-screen.mobile-fullscreen .game-iframe {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    border: none !important;
+}
+
 #arcade-screen.mobile-fullscreen .crt-overlay,
 #arcade-screen.mobile-fullscreen .crt-vignette {
     display: none !important;
