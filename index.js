@@ -1,5 +1,57 @@
 // ChronosGate Gamer Portal Core Script - 2010s Time & Space Portal
 document.addEventListener('DOMContentLoaded', () => {
+    // Mobile Fullscreen & Orientation Locking Logic
+    const isMobileDevice = () => {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+               (window.innerWidth <= 768 && ('ontouchstart' in window || navigator.maxTouchPoints > 0));
+    };
+
+    const arcadeScreen = document.getElementById('arcade-screen');
+
+    function handleMobileOrientation() {
+        if (!document.body.classList.contains('mobile-play-active')) return;
+        if (!arcadeScreen) return;
+
+        if (window.innerHeight > window.innerWidth) {
+            arcadeScreen.classList.add('portrait-rotated');
+        } else {
+            arcadeScreen.classList.remove('portrait-rotated');
+        }
+    }
+
+    function activateMobilePlay() {
+        if (!isMobileDevice()) return;
+        
+        document.body.classList.add('mobile-play-active');
+        if (arcadeScreen) {
+            arcadeScreen.classList.add('mobile-fullscreen');
+            handleMobileOrientation();
+        }
+    }
+
+    function deactivateMobilePlay() {
+        document.body.classList.remove('mobile-play-active');
+        if (arcadeScreen) {
+            arcadeScreen.classList.remove('mobile-fullscreen');
+            arcadeScreen.classList.remove('portrait-rotated');
+        }
+    }
+
+    // Exit Game button handler
+    const mobileExitBtn = document.getElementById('mobile-exit-btn');
+    if (mobileExitBtn) {
+        mobileExitBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            deactivateMobilePlay();
+            // Switch back to home tab
+            const homeTab = document.querySelector('.nav-tab[data-tab="home"]');
+            if (homeTab) homeTab.click();
+        });
+    }
+
+    window.addEventListener('resize', handleMobileOrientation);
+    window.addEventListener('orientationchange', handleMobileOrientation);
+
     // 1. TABS SYSTEM
     const navTabs = document.querySelectorAll('.nav-tab');
     const tabContents = document.querySelectorAll('.tab-content');
@@ -30,8 +82,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         const frame = document.getElementById('game-frame');
                         if (frame) frame.focus();
                     }, 100);
+                    activateMobilePlay();
                 } else {
                     wrapper.classList.remove('play-active');
+                    deactivateMobilePlay();
                 }
             }
         });
@@ -66,9 +120,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         height: 100% !important;
                         margin: 0 !important;
                     }
-                    #unity-canvas {
+                    #unity-container.unity-desktop #unity-canvas {
                         width: 100% !important;
                         height: calc(100% - 38px) !important;
+                        display: block !important;
+                    }
+                    #unity-container.unity-mobile #unity-canvas {
+                        width: 100% !important;
+                        height: 100% !important;
                         display: block !important;
                     }
                     #unity-footer {
@@ -125,7 +184,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 3. CRT TOGGLE FX
     const crtToggleBtn = document.getElementById('crt-toggle-btn');
-    const arcadeScreen = document.getElementById('arcade-screen');
 
     if (crtToggleBtn && arcadeScreen) {
         crtToggleBtn.addEventListener('click', () => {

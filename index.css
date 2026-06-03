@@ -87,6 +87,50 @@ body {
     text-align: center;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 }
+.steam-wishlist-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #1b2838 0%, #2a475e 100%);
+    border: 2px solid #66c0f4;
+    padding: 6px 12px;
+    border-radius: 4px;
+    color: #ffffff;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.55rem;
+    font-weight: bold;
+    text-decoration: none;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 0 12px rgba(102, 192, 244, 0.25);
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+.steam-wishlist-btn:hover {
+    border-color: #ffffff;
+    color: #ffffff;
+    background: linear-gradient(135deg, #2a475e 0%, #3b5e7c 100%);
+    box-shadow: 0 0 18px rgba(102, 192, 244, 0.6);
+    transform: translateY(-1px);
+}
+.steam-wishlist-btn .steam-icon {
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
+}
+@media (max-width: 600px) {
+    .steam-wishlist-btn {
+        position: relative;
+        top: 0;
+        right: 0;
+        margin: 10px auto 0 auto;
+        display: inline-flex;
+        justify-content: center;
+        max-width: 220px;
+    }
+}
 
 /* Decorative Metallic Rivets */
 .site-header::before, .site-header::after,
@@ -1296,7 +1340,7 @@ body {
     .main-container {
         grid-template-columns: 1fr;
     }
-    .body {
+    body {
         padding: 10px;
     }
     .logo-img {
@@ -1309,6 +1353,241 @@ body {
         font-size: 0.9rem;
         padding: 15px 30px;
     }
+}
+
+/* Mobile Responsive Adjustments (Phones) */
+@media (max-width: 768px) {
+    body {
+        padding: 8px;
+    }
+    .wrapper {
+        border-width: 2px;
+        outline-width: 1px;
+        border-radius: 8px;
+    }
+    .main-container {
+        padding: 12px;
+    }
+    
+    /* Header Sizing */
+    .site-header {
+        padding: 20px 10px 15px 10px;
+    }
+    .logo-img {
+        max-width: 200px;
+    }
+    .logo-fallback {
+        font-size: 1.3rem;
+        padding: 10px;
+    }
+    .subtitle {
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+    }
+    .steam-wishlist-btn {
+        margin: 10px auto 0 auto;
+        display: flex;
+        justify-content: center;
+        max-width: 180px;
+        font-size: 0.5rem;
+        padding: 5px 10px;
+        position: relative;
+        top: 0;
+        right: 0;
+    }
+
+    /* Sound Player / Volume Hidden on Mobile to save space */
+    .control-bar {
+        padding: 8px;
+        margin-top: 10px;
+    }
+    .audio-player {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+    }
+    .audio-player .visualizer-canvas {
+        display: none !important;
+    }
+    .audio-player .volume-control {
+        display: none !important;
+    }
+    .audio-btn {
+        font-size: 0.65rem;
+        padding: 4px 8px;
+    }
+
+    /* Navigation Spacing */
+    .site-nav {
+        padding: 6px;
+        gap: 6px;
+    }
+    .nav-tab {
+        padding: 8px 12px;
+        font-size: 0.7rem;
+    }
+
+    /* Home Layout Stack */
+    .about-hero {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    .hero-image-wrapper {
+        margin: 0 auto;
+    }
+    .hero-desc h2 {
+        font-size: 1.1rem;
+    }
+    .hero-desc p {
+        font-size: 0.85rem;
+        text-align: left;
+    }
+    .feature-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin: 15px 0;
+    }
+    .feature-card {
+        padding: 10px;
+    }
+    .feature-card h3 {
+        font-size: 0.85rem;
+    }
+    .feature-card p {
+        font-size: 0.75rem;
+    }
+    .req-grid {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+    .cta-container {
+        margin: 20px 0 10px 0;
+    }
+    .giant-btn {
+        font-size: 0.85rem;
+        padding: 12px 24px;
+    }
+
+    /* Devlog adjustments */
+    .devlog-accordion-header {
+        padding: 10px 12px;
+    }
+    .devlog-accordion-title {
+        font-size: 0.9rem;
+    }
+    .devlog-accordion-meta {
+        font-size: 0.65rem;
+    }
+    .devlog-accordion-toggle {
+        font-size: 0.85rem;
+    }
+    .devlog-body {
+        padding: 12px;
+        font-size: 0.8rem;
+    }
+    .devlog-footer {
+        padding: 8px 12px;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    /* Media Gallery slider */
+    .media-slider-container {
+        aspect-ratio: 1.4;
+    }
+    .slide-caption {
+        font-size: 0.7rem;
+        padding: 6px 10px;
+    }
+    .slider-nav {
+        font-size: 0.65rem;
+        padding: 6px;
+    }
+
+    /* Badges panel */
+    .badges-container {
+        padding: 12px;
+    }
+    .retro-badges-panel {
+        gap: 10px;
+    }
+    .retro-badge-wrapper {
+        transform: none !important;
+    }
+    .site-footer {
+        font-size: 0.9rem;
+    }
+}
+
+/* Mobile Fullscreen Game Overlay & Orientation Rules */
+body.mobile-play-active {
+    overflow: hidden !important;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+.mobile-exit-btn {
+    display: none;
+}
+
+#arcade-screen.mobile-fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999999;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #000;
+}
+
+#arcade-screen.mobile-fullscreen .crt-overlay,
+#arcade-screen.mobile-fullscreen .crt-vignette {
+    display: none !important;
+}
+
+/* Float exit button in corner */
+#arcade-screen.mobile-fullscreen .mobile-exit-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 10000000;
+    background: rgba(0, 0, 0, 0.75);
+    border: 2px solid var(--slime-neon);
+    color: var(--slime-neon);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.7rem;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+    transition: all 0.2s ease;
+}
+
+#arcade-screen.mobile-fullscreen .mobile-exit-btn:hover {
+    background: var(--slime-neon);
+    color: #000;
+    box-shadow: 0 0 15px var(--slime-neon);
+}
+
+/* Rotate screen 90deg centered when screen is portrait */
+#arcade-screen.mobile-fullscreen.portrait-rotated {
+    top: 50%;
+    left: 50%;
+    width: 100vh;
+    height: 100vw;
+    transform: translate(-50%, -50%) rotate(90deg);
+    transform-origin: center;
 }
 
 
