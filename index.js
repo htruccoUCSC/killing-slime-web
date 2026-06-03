@@ -2,8 +2,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Mobile Fullscreen & Orientation Locking Logic
     const isMobileDevice = () => {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
-               (window.innerWidth <= 768 && ('ontouchstart' in window || navigator.maxTouchPoints > 0));
+        const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        const isSmallScreen = Math.min(window.innerWidth, window.innerHeight) <= 1024;
+        return isMobileUA || (hasTouch && isSmallScreen);
     };
 
     const arcadeScreen = document.getElementById('arcade-screen');
