@@ -3,11 +3,11 @@
   "rewrites": [
     {
       "source": "/devlog:slug",
-      "destination": "/index.html"
+      "destination": "/"
     },
     {
       "source": "/devlog",
-      "destination": "/index.html"
+      "destination": "/"
     }
   ]
 }
