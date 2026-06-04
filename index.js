@@ -745,8 +745,15 @@ document.addEventListener('DOMContentLoaded', () => {
         return null;
     }
 
+    const useHashRouting = window.location.protocol === 'file:' || 
+                           window.location.hostname === 'localhost' || 
+                           window.location.hostname === '127.0.0.1' ||
+                           window.location.hostname.startsWith('192.168.') ||
+                           window.location.hostname.startsWith('10.') ||
+                           window.location.hostname.startsWith('172.');
+
     function navigateToDevlog(devlogId) {
-        if (window.location.protocol === 'file:') {
+        if (useHashRouting) {
             history.pushState(null, null, `#${devlogId}`);
         } else {
             history.pushState(null, null, `/${devlogId}`);
@@ -755,7 +762,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function navigateToHome() {
-        if (window.location.protocol === 'file:') {
+        if (useHashRouting) {
             history.pushState(null, null, '#');
         } else {
             history.pushState(null, null, '/');
@@ -769,6 +776,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const targetId = getTargetDevlogFromUrl();
 
         if (targetId) {
+            // Check if they wanted the devlogs list itself
+            if (targetId === 'devlogs' || targetId === 'devlog') {
+                if (portalView) portalView.style.display = '';
+                if (readerView) readerView.style.display = 'none';
+                switchTab('devlogs', false);
+                return;
+            }
+
             // Find in cache
             const devlog = devlogsCache.find(log => getDevlogId(log.file) === targetId);
             if (devlog) {
@@ -827,10 +842,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (portalView) portalView.style.display = 'none';
                 if (readerView) readerView.style.display = 'block';
                 
+                // Set the active tab in background
+                switchTab('devlogs', false);
+                
                 // Scroll to top of the reading page
                 window.scrollTo(0, 0);
             } else {
                 console.warn(`Devlog with id ${targetId} not loaded in cache yet.`);
+                // Fallback to home/portal
+                if (portalView) portalView.style.display = '';
+                if (readerView) readerView.style.display = 'none';
             }
         } else {
             // Show portal, hide reader
