@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Unity Web Player | ChronosGate</title>
-    <link rel="shortcut icon" href="TemplateData/favicon.ico">
-    <link rel="stylesheet" href="TemplateData/style.css">
+    <link rel="shortcut icon" href="/game/play/TemplateData/favicon.ico">
+    <link rel="stylesheet" href="/game/play/TemplateData/style.css">
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
@@ -51,14 +51,14 @@
         updateBannerVisibility();
       }
 
-      var buildUrl = "Build";
+      var buildUrl = "/game/play/Build";
       var loaderUrl = buildUrl + "/WebGLForWebsite.loader.js";
       var config = {
         arguments: [],
         dataUrl: buildUrl + "/WebGLForWebsite.data.unityweb",
         frameworkUrl: buildUrl + "/WebGLForWebsite.framework.js.unityweb",
         codeUrl: buildUrl + "/WebGLForWebsite.wasm.unityweb",
-        streamingAssetsUrl: "StreamingAssets",
+        streamingAssetsUrl: "/game/play/StreamingAssets",
         companyName: "DefaultCompany",
         productName: "ChronosGate",
         productVersion: "1.0",
