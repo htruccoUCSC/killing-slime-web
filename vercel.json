@@ -2,7 +2,11 @@
   "cleanUrls": true,
   "rewrites": [
     {
-      "source": "/devlog{:slug}",
+      "source": "/devlog:slug",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/devlog",
       "destination": "/index.html"
     }
   ]
