@@ -10,7 +10,7 @@
 </head>
 <body>
 
-    <div class="wrapper">
+    <div class="wrapper" id="portal-view">
         
         <!-- Retro Header -->
         <header class="site-header">
@@ -73,7 +73,7 @@
                             <div class="hero-desc">
                                 <h2 class="pulsing-slime" style="color: var(--slime-neon); font-family: 'Orbitron', sans-serif;">Slimes From Another Universe!</h2>
                                 <p style="margin-top: 10px;">
-                                    In <strong>Killing Slime</strong>, you the player are solely responsible for defending the timeline from invading slimes from another another universe. Defend the past, present, and future by fortifying your position with different versions of your chud friend from different timelines. Choose the right units, augments, items, and faction synergies to survive the onslaught of slimes.
+                                    In <strong>Killing Slime</strong>, you the player are solely responsible for defending the timeline from invading slimes from another universe. Defend the past, present, and future by fortifying your position with different versions of your chud friend from different timelines. Choose the right units, augments, items, and faction synergies to survive the onslaught of slimes.
                                 </p>
                             </div>
                         </div>
@@ -242,6 +242,26 @@
             </footer>
         </div>
 
+    </div>
+
+    <!-- Devlog Reader View - Standalone Reading Interface -->
+    <div class="reader-wrapper" id="reader-view" style="display: none;">
+        <header class="reader-header">
+            <button class="back-home-btn" id="back-home-btn">
+                <span>&lt; BACK HOME</span>
+            </button>
+        </header>
+        <main class="reader-content console-panel neon-purple">
+            <div class="reader-meta-container">
+                <h1 id="reader-title">Devlog Title</h1>
+                <div id="reader-meta">Posted by Author | Date</div>
+                <div id="reader-tags" class="devlog-footer" style="border: none; background: transparent; padding: 0;"></div>
+            </div>
+            <hr class="reader-divider">
+            <div id="reader-body" class="devlog-body">
+                <!-- Rendered Markdown will be injected here -->
+            </div>
+        </main>
     </div>
 
     <!-- Script Block for UI, Navigation, local storage components and procedural Audio Synthesizer -->

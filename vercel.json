@@ -1,1 +1,9 @@
-{}
+{
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/:slug(devlog[a-zA-Z0-9_-]+)",
+      "destination": "/index.html"
+    }
+  ]
+}

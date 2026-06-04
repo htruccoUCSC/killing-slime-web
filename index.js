@@ -176,38 +176,51 @@ document.addEventListener('DOMContentLoaded', () => {
     const navTabs = document.querySelectorAll('.nav-tab');
     const tabContents = document.querySelectorAll('.tab-content');
 
+    function switchTab(targetTab, updateHistory = true) {
+        const tab = document.querySelector(`.nav-tab[data-tab="${targetTab}"]`);
+        if (!tab) return;
+
+        // Update nav state
+        navTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        // Update content state
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        const targetContent = document.getElementById(`tab-${targetTab}`);
+        if (targetContent) {
+            targetContent.classList.add('active');
+        }
+
+        // Update wrapper class for custom play tab layout
+        const wrapper = document.querySelector('.wrapper');
+        if (wrapper) {
+            if (targetTab === 'play') {
+                wrapper.classList.add('play-active');
+                setTimeout(() => {
+                    const frame = document.getElementById('game-frame');
+                    if (frame) frame.focus();
+                }, 100);
+                activateMobilePlay();
+            } else {
+                wrapper.classList.remove('play-active');
+                deactivateMobilePlay();
+            }
+        }
+
+        // Clear devlog query/hash from URL when switching tabs if it was present
+        if (updateHistory && targetTab !== 'devlogs') {
+            if (window.location.hash || window.location.pathname !== '/') {
+                history.pushState(null, null, '/');
+            }
+        }
+    }
+
     navTabs.forEach(tab => {
         tab.addEventListener('click', () => {
             const targetTab = tab.getAttribute('data-tab');
-
-            // Update nav state
-            navTabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-
-            // Update content state
-            tabContents.forEach(content => {
-                content.classList.remove('active');
-            });
-            const targetContent = document.getElementById(`tab-${targetTab}`);
-            if (targetContent) {
-                targetContent.classList.add('active');
-            }
-
-            // Update wrapper class for custom play tab layout
-            const wrapper = document.querySelector('.wrapper');
-            if (wrapper) {
-                if (targetTab === 'play') {
-                    wrapper.classList.add('play-active');
-                    setTimeout(() => {
-                        const frame = document.getElementById('game-frame');
-                        if (frame) frame.focus();
-                    }, 100);
-                    activateMobilePlay();
-                } else {
-                    wrapper.classList.remove('play-active');
-                    deactivateMobilePlay();
-                }
-            }
+            switchTab(targetTab, true);
         });
     });
 
@@ -512,13 +525,35 @@ document.addEventListener('DOMContentLoaded', () => {
             .replace(/</g, "&lt;")
             .replace(/>/g, "&gt;");
 
+        // Restore safe details/summary tags
+        escaped = escaped
+            .replace(/&lt;details&gt;/g, '<details>')
+            .replace(/&lt;\/details&gt;/g, '</details>')
+            .replace(/&lt;summary&gt;/g, '<summary>')
+            .replace(/&lt;\/summary&gt;/g, '</summary>');
+
         // Bold: **text**
         escaped = escaped.replace(/\*\*(.*?)\*\"/g, '<strong>$1</strong>');
-        // Handle bold with asterisks correctly
         escaped = escaped.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+        // Italics: *text* or _text_
+        escaped = escaped.replace(/\*(.*?)\*/g, '<em>$1</em>');
+        escaped = escaped.replace(/_(.*?)_/g, '<em>$1</em>');
+
+        // Images: ![alt](url)
+        escaped = escaped.replace(/!\[(.*?)\]\((.*?)\)/g, (match, alt, url) => {
+            let resolvedUrl = url;
+            if (url.startsWith('../assets/')) {
+                resolvedUrl = url.replace('../assets/', 'assets/');
+            }
+            return `<img src="${resolvedUrl}" alt="${alt}" class="devlog-image">`;
+        });
 
         // Links: [text](url)
         escaped = escaped.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank">$1</a>');
+
+        // Inline Code: `code`
+        escaped = escaped.replace(/`(.*?)`/g, '<code class="inline-code">$1</code>');
 
         return escaped;
     }
@@ -527,53 +562,144 @@ document.addEventListener('DOMContentLoaded', () => {
         const lines = md.split('\n');
         let html = '';
         let inList = false;
+        let inTable = false;
+        let inCodeBlock = false;
 
         for (let i = 0; i < lines.length; i++) {
-            let line = lines[i].trim();
+            let line = lines[i]; // Keep original line spacing inside code blocks
+            let trimmed = line.trim();
+
+            // Handle Code Block parsing
+            if (inCodeBlock) {
+                if (trimmed === '```') {
+                    html += '</code></pre>';
+                    inCodeBlock = false;
+                    continue;
+                } else {
+                    // Escape raw HTML inside code block
+                    const escapedLine = line
+                        .replace(/&/g, "&amp;")
+                        .replace(/</g, "&lt;")
+                        .replace(/>/g, "&gt;");
+                    html += escapedLine + '\n';
+                    continue;
+                }
+            }
+
+            // Handle Table parsing
+            if (inTable) {
+                if (trimmed.startsWith('|')) {
+                    const cells = trimmed.split('|').slice(1, -1);
+                    html += '<tr>';
+                    cells.forEach(c => {
+                        html += `<td>${parseInlineMarkdown(c.trim())}</td>`;
+                    });
+                    html += '</tr>';
+                    continue;
+                } else {
+                    html += '</tbody></table></div>';
+                    inTable = false;
+                    // Fall through to let the line process normally
+                }
+            }
 
             // Skip H1 title header since we pull it out for the accordion header headline
-            if (i === 0 && line.startsWith('# ')) {
+            if (i === 0 && trimmed.startsWith('# ')) {
                 continue;
             }
 
-            // Handle Subheadings (## or ###)
-            if (line.startsWith('### ')) {
+            // Detect Code Block start
+            if (trimmed.startsWith('```')) {
                 if (inList) { html += '</ul>'; inList = false; }
-                html += `<h5>${line.substring(4)}</h5>`;
+                if (inTable) { html += '</tbody></table></div>'; inTable = false; }
+                const lang = trimmed.substring(3).trim();
+                html += `<pre><code class="language-${lang}">`;
+                inCodeBlock = true;
                 continue;
             }
-            if (line.startsWith('## ')) {
+
+            // Detect new table start
+            if (!inTable && trimmed.startsWith('|') && trimmed.includes('|')) {
+                const nextLine = (i + 1 < lines.length) ? lines[i + 1].trim() : '';
+                const isSeparator = nextLine.startsWith('|') && nextLine.includes('-') && /^[|:\s-]+$/.test(nextLine);
+                if (isSeparator) {
+                    if (inList) { html += '</ul>'; inList = false; }
+                    const headers = trimmed.split('|').slice(1, -1);
+                    html += '<div class="table-container"><table><thead><tr>';
+                    headers.forEach(h => {
+                        html += `<th>${parseInlineMarkdown(h.trim())}</th>`;
+                    });
+                    html += '</tr></thead><tbody>';
+                    inTable = true;
+                    i++; // Skip the separator line
+                    continue;
+                }
+            }
+
+            // Handle inline HTML blocks (details, summary) directly to avoid wrapping in <p>
+            if (trimmed.startsWith('<details') || trimmed.startsWith('</details>') || trimmed.startsWith('<summary')) {
                 if (inList) { html += '</ul>'; inList = false; }
-                html += `<h4>${line.substring(3)}</h4>`;
+                if (inTable) { html += '</tbody></table></div>'; inTable = false; }
+                html += parseInlineMarkdown(trimmed);
+                continue;
+            }
+
+            // Handle Subheadings (##, ###, or ####)
+            if (trimmed.startsWith('#### ')) {
+                if (inList) { html += '</ul>'; inList = false; }
+                html += `<h6>${parseInlineMarkdown(trimmed.substring(5))}</h6>`;
+                continue;
+            }
+            if (trimmed.startsWith('### ')) {
+                if (inList) { html += '</ul>'; inList = false; }
+                html += `<h5>${parseInlineMarkdown(trimmed.substring(4))}</h5>`;
+                continue;
+            }
+            if (trimmed.startsWith('## ')) {
+                if (inList) { html += '</ul>'; inList = false; }
+                html += `<h4>${parseInlineMarkdown(trimmed.substring(3))}</h4>`;
+                continue;
+            }
+            if (trimmed.startsWith('# ')) {
+                if (inList) { html += '</ul>'; inList = false; }
+                html += `<h3>${parseInlineMarkdown(trimmed.substring(2))}</h3>`;
                 continue;
             }
 
             // Handle List Items starting with * or -
-            if (line.startsWith('* ') || line.startsWith('- ')) {
+            if (trimmed.startsWith('* ') || trimmed.startsWith('- ')) {
                 if (!inList) {
                     html += '<ul>';
                     inList = true;
                 }
-                let content = line.substring(2);
+                let content = trimmed.substring(2);
                 content = parseInlineMarkdown(content);
                 html += `<li>${content}</li>`;
                 continue;
             }
 
             // If not a list item, close list if we were in one
-            if (inList && line !== '') {
+            if (inList && trimmed !== '') {
                 html += '</ul>';
                 inList = false;
             }
 
             // Handle empty lines (paragraphs separator)
-            if (line === '') {
+            if (trimmed === '') {
                 continue;
             }
 
             // Standard paragraph
-            let content = parseInlineMarkdown(line);
+            let content = parseInlineMarkdown(trimmed);
             html += `<p>${content}</p>`;
+        }
+
+        if (inTable) {
+            html += '</tbody></table></div>';
+        }
+
+        if (inCodeBlock) {
+            html += '</code></pre>';
         }
 
         if (inList) {
@@ -589,6 +715,134 @@ document.addEventListener('DOMContentLoaded', () => {
             return firstLine.substring(2);
         }
         return "Untitled Devlog";
+    }
+
+    let devlogsCache = [];
+
+    function getDevlogId(filePath) {
+        const parts = filePath.split('/');
+        const fileName = parts[parts.length - 1];
+        return fileName.replace(/\.md$/, '');
+    }
+
+    function getTargetDevlogFromUrl() {
+        // 1. Check hash first (useful for local files / fallbacks)
+        const hash = window.location.hash;
+        if (hash) {
+            const cleanedHash = hash.replace(/^#\/?/, '');
+            const finalHash = cleanedHash.replace(/^devlog\//, '');
+            if (finalHash) return finalHash;
+        }
+
+        // 2. Check pathname for clean URLs on Vercel
+        const pathname = window.location.pathname;
+        if (pathname && pathname !== '/') {
+            const cleanedPath = pathname.replace(/^\/|\/$/g, '');
+            const finalPath = cleanedPath.replace(/^devlog\//, '');
+            if (finalPath) return finalPath;
+        }
+
+        return null;
+    }
+
+    function navigateToDevlog(devlogId) {
+        if (window.location.protocol === 'file:') {
+            history.pushState(null, null, `#${devlogId}`);
+        } else {
+            history.pushState(null, null, `/${devlogId}`);
+        }
+        handleRouting();
+    }
+
+    function navigateToHome() {
+        if (window.location.protocol === 'file:') {
+            history.pushState(null, null, '#');
+        } else {
+            history.pushState(null, null, '/');
+        }
+        handleRouting();
+    }
+
+    function handleRouting() {
+        const portalView = document.getElementById('portal-view');
+        const readerView = document.getElementById('reader-view');
+        const targetId = getTargetDevlogFromUrl();
+
+        if (targetId) {
+            // Find in cache
+            const devlog = devlogsCache.find(log => getDevlogId(log.file) === targetId);
+            if (devlog) {
+                // Render the devlog content
+                const title = extractHeadline(devlog.content);
+                const parsedBody = parseMarkdown(devlog.content);
+                
+                document.getElementById('reader-title').textContent = title;
+                document.getElementById('reader-meta').textContent = `Posted by: ${devlog.author} | Date: ${devlog.date}`;
+                
+                const tagsContainer = document.getElementById('reader-tags');
+                tagsContainer.innerHTML = '';
+                if (devlog.tags && Array.isArray(devlog.tags)) {
+                    devlog.tags.forEach((tag, idx) => {
+                        const tagEl = document.createElement('span');
+                        tagEl.className = devlog.featured && idx === 0 ? 'tag-badge featured' : 'tag-badge';
+                        tagEl.textContent = tag;
+                        tagsContainer.appendChild(tagEl);
+                    });
+                }
+                
+                document.getElementById('reader-body').innerHTML = parsedBody;
+                
+                // Add copy buttons to details elements
+                const detailsElements = document.querySelectorAll('#reader-body details');
+                detailsElements.forEach(details => {
+                    const copyBtn = document.createElement('button');
+                    copyBtn.className = 'copy-btn';
+                    copyBtn.textContent = 'COPY';
+                    
+                    copyBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        // Extract code text if a block is inside, else fall back to details innerText
+                        const codeElement = details.querySelector('pre code');
+                        const textToCopy = codeElement ? codeElement.textContent : details.innerText.replace('COPY', '').trim();
+                        
+                        navigator.clipboard.writeText(textToCopy).then(() => {
+                            copyBtn.textContent = 'COPIED!';
+                            copyBtn.classList.add('copied');
+                            setTimeout(() => {
+                                copyBtn.textContent = 'COPY';
+                                copyBtn.classList.remove('copied');
+                            }, 2000);
+                        }).catch(err => {
+                            console.error('Could not copy text: ', err);
+                            copyBtn.textContent = 'ERROR';
+                        });
+                    });
+                    
+                    details.appendChild(copyBtn);
+                });
+                
+                // Toggle view display
+                if (portalView) portalView.style.display = 'none';
+                if (readerView) readerView.style.display = 'block';
+                
+                // Scroll to top of the reading page
+                window.scrollTo(0, 0);
+            } else {
+                console.warn(`Devlog with id ${targetId} not loaded in cache yet.`);
+            }
+        } else {
+            // Show portal, hide reader
+            if (portalView) portalView.style.display = '';
+            if (readerView) readerView.style.display = 'none';
+            
+            // Make sure we are on the devlogs tab if we navigated back
+            const activeTab = document.querySelector('.nav-tab.active');
+            if (activeTab && activeTab.getAttribute('data-tab') === 'devlogs') {
+                switchTab('devlogs', false);
+            }
+        }
     }
 
     async function loadDevlogs() {
@@ -608,7 +862,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 try {
                     const response = await fetch(item.file);
                     if (!response.ok) {
-                        // Silently ignore if file deleted / not found
                         console.warn(`Devlog file ignored (not found): ${item.file}`);
                         return null;
                     }
@@ -620,12 +873,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     };
                 } catch (err) {
                     console.warn(`Error fetching ${item.file}, ignoring:`, err);
-                    return null; // Ignore deleted logs silently
+                    return null;
                 }
             });
 
-            // Wait for all and filter out any failed/ignored files
+            // Wait for all and filter out failed files
             const loadedLogs = (await Promise.all(fetchPromises)).filter(log => log !== null);
+            devlogsCache = loadedLogs;
 
             // Clear loading screens
             devlogListContainer.innerHTML = '';
@@ -641,71 +895,56 @@ document.addEventListener('DOMContentLoaded', () => {
 
             loadedLogs.forEach((log) => {
                 const title = extractHeadline(log.content);
-                const parsedBody = parseMarkdown(log.content);
+                const devlogId = getDevlogId(log.file);
 
-                const accordionItem = document.createElement('div');
-                accordionItem.className = 'devlog-accordion-item';
+                // Create clickable Card instead of accordion
+                const card = document.createElement('div');
+                card.className = 'devlog-card';
+                card.id = `devlog-card-${devlogId}`;
 
-                const header = document.createElement('div');
-                header.className = 'devlog-accordion-header';
-                
-                const headerLeft = document.createElement('div');
-                headerLeft.className = 'devlog-accordion-header-left';
-                
+                const cardHeader = document.createElement('div');
+                cardHeader.className = 'devlog-card-header';
+
                 const titleEl = document.createElement('h3');
-                titleEl.className = 'devlog-accordion-title';
+                titleEl.className = 'devlog-card-title';
                 titleEl.textContent = title;
-                
-                const metaEl = document.createElement('span');
-                metaEl.className = 'devlog-accordion-meta';
-                metaEl.textContent = `Posted by: ${log.author} | Date: ${log.date}`;
-                
-                headerLeft.appendChild(titleEl);
-                headerLeft.appendChild(metaEl);
 
-                const toggleEl = document.createElement('span');
-                toggleEl.className = 'devlog-accordion-toggle';
-                toggleEl.textContent = '[ + EXPAND ]';
+                const dateEl = document.createElement('span');
+                dateEl.className = 'devlog-card-date';
+                dateEl.textContent = log.date;
 
-                header.appendChild(headerLeft);
-                header.appendChild(toggleEl);
+                cardHeader.appendChild(titleEl);
+                cardHeader.appendChild(dateEl);
 
-                const contentPanel = document.createElement('div');
-                contentPanel.className = 'devlog-accordion-content';
+                const metaEl = document.createElement('div');
+                metaEl.className = 'devlog-card-meta';
+                metaEl.textContent = `By ${log.author}`;
 
-                const bodyEl = document.createElement('div');
-                bodyEl.className = 'devlog-body';
-                bodyEl.innerHTML = parsedBody;
-
-                const footerEl = document.createElement('div');
-                footerEl.className = 'devlog-footer';
+                const tagsEl = document.createElement('div');
+                tagsEl.className = 'devlog-card-tags';
 
                 if (log.tags && Array.isArray(log.tags)) {
                     log.tags.forEach((tag, idx) => {
                         const tagEl = document.createElement('span');
-                        if (idx === 0 && log.featured) {
-                            tagEl.className = 'tag-badge featured';
-                        } else {
-                            tagEl.className = 'tag-badge';
-                        }
+                        tagEl.className = log.featured && idx === 0 ? 'tag-badge featured' : 'tag-badge';
                         tagEl.textContent = tag;
-                        footerEl.appendChild(tagEl);
+                        tagsEl.appendChild(tagEl);
                     });
                 }
 
-                contentPanel.appendChild(bodyEl);
-                contentPanel.appendChild(footerEl);
+                card.appendChild(cardHeader);
+                card.appendChild(metaEl);
+                card.appendChild(tagsEl);
 
-                accordionItem.appendChild(header);
-                accordionItem.appendChild(contentPanel);
-
-                header.addEventListener('click', () => {
-                    const isExpanded = accordionItem.classList.toggle('expanded');
-                    toggleEl.textContent = isExpanded ? '[ - COLLAPSE ]' : '[ + EXPAND ]';
+                card.addEventListener('click', () => {
+                    navigateToDevlog(devlogId);
                 });
 
-                devlogListContainer.appendChild(accordionItem);
+                devlogListContainer.appendChild(card);
             });
+
+            // Initial run of routing once logs are loaded
+            handleRouting();
 
         } catch (error) {
             devlogListContainer.innerHTML = `
@@ -716,6 +955,18 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("Critical error building devlog timeline", error);
         }
     }
+
+    // Set up back button listener
+    const backHomeBtn = document.getElementById('back-home-btn');
+    if (backHomeBtn) {
+        backHomeBtn.addEventListener('click', () => {
+            navigateToHome();
+        });
+    }
+
+    // Set up router events
+    window.addEventListener('popstate', handleRouting);
+    window.addEventListener('hashchange', handleRouting);
 
     loadDevlogs();
 });

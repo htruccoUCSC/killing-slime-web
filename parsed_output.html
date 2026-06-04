@@ -1,0 +1,487 @@
+<p><strong>Date:</strong> June 3, 2026</p><p><strong>Author:</strong> Sonny Trucco</p><h4>Why We Switched</h4><p>Like most personal and student projects, <em>Killing Slime</em> started out using Git hosted on GitHub for version control. While Git is a great version control option, it has weaknesses that are exceedingly noticeable in the space of game development. Git struggles with versioning large binary assets because it is designed to store full file snapshots over time. While this works for small, text-based code files, tiny changes to massive binary files (like 3D models, textures, or Unity scenes) cause the repository's historical data to bloat exponentially. Git does offer a solution to this in the form of Git LFS (Large File Storage). LFS turns large files into pointers and stores them outside of your main repository, only pulling them when a new copy is needed. However, when using it on GitHub, there are bandwidth and storage rate limits applied to free accounts that we eventually exceeded.</p><p>Another issue we ran into was our team's general inexperience with Unity and Git. For many team members, this project was their first time using Unity, and their first time using Unity with Git by extension. This led to numerous Unity scene and prefab merge conflicts. While these can be resolved, it is much easier if they never happen in the first place.</p><p>Once these two factors became clear, I decided we needed to change our version control system. After doing some research and asking industry experts at GDC, I settled on Perforce P4 as the solution to our problem. With P4, we would host the server ourselves, avoiding GitHub's LFS rate limits. We would also have access to file locking, preventing two developers from making concurrent changes to a file that would be difficult to merge.</p><h4>How to Set Up P4</h4><p>Unfortunately, setting up P4 is not as simple as going to GitHub and clicking the "New Repository" button. To set up P4, you have to host it yourself. You can host P4 locally, pay Perforce to host it for you, or use a cloud compute provider. We chose to host P4 using Amazon Web Services (AWS), which is the process I will detail below. If you would like to follow along, you will need:</p><ul><li>An AWS Account with a credit card attached</li><li>~2 hours of time</li></ul><h5>Costs</h5><p>It's important to note that hosting on AWS theoretically costs money, but in practice as a student you can stack up to $400 of AWS credits just for signing up for AWS and other student developer benefits. We were able to host P4 and a CI/CD pipeline for the duration of our project entirely for free.</p><h5>How to Deploy on AWS</h5><h6>Step 1: Choosing a Region</h6><p>In the interest of saving on monthly compute, I highly recommend choosing from the following three regions:</p><ul><li>us-east-1</li><li>us-east-2</li><li>us-west-2</li></ul><p>Since my team was based in California, we chose <code class="inline-code">us-west-2</code>, but you should choose whichever region is closest to you. You can select your region in the top-right corner of the AWS Console.</p><p><img src="assets/AWSTutorial1.png" alt="AWS Region Select" class="devlog-image"></p><h6>Step 2: Creating a Key Pair</h6><p>On AWS, you will need an RSA key pair to be able to access your P4 server. To create one:</p><p>1. From the AWS Console, search for "EC2" and select the EC2 dashboard.</p><p>2. On the left-hand EC2 menu, select <strong>Key Pairs</strong> under <strong>Network &amp; Security</strong>.</p><p><img src="assets/AWSTutorial2.png" alt="EC2 Network &amp; Security" class="devlog-image"></p><p>3. In the top-right corner, select <strong>Create key pair</strong>.</p><p>4. Enter a descriptive name like <code class="inline-code">MyGameP4KeyPair</code>.</p><p>5. Choose <strong>RSA</strong> for the key pair type.</p><p>6. Choose <strong>.pem</strong> for the private key file format.</p><p>7. Click <strong>Create key pair</strong> and store the downloaded file somewhere safe and secure.</p><h6>Step 3: Subscribing to P4 on AWS</h6><p>1. Visit the <a href="https://aws.amazon.com/marketplace/pp/prodview-nw7wxff425so4" target="_blank">Perforce Helix Core AWS Marketplace page</a>.</p><p>2. Click <strong>View Purchase Options</strong>.</p><p><em>Note: P4 is free for up to 5 users and 20 workspaces, which is very manageable for a student team.</em></p><p>3. Read and accept the Terms and Conditions.</p><p>4. Click <strong>Continue to Configuration</strong>.</p><p>5. Choose the default <strong>Fulfillment option</strong>, the most recent <strong>Software Version</strong>, and the same <strong>Region</strong> you chose earlier.</p><p>6. Choose <strong>Continue to Launch</strong>.</p><p>7. Choose <strong>Launch CloudFormation</strong>.</p><h6>Step 4: Creating a Stack</h6><p>In this section, we will create the server hosting our P4 depot. There are a lot of options to configure, but if you are a student, you will most likely want to choose the recommended settings below.</p><p>1. On the first page ("Create stack"), do not change anything; simply click <strong>Next</strong>.</p><p>2. Provide a descriptive stack name like <code class="inline-code">MyGameName-P4</code>.</p><p>3. Fill out the following parameters:</p><h6>Security and Networking</h6><div class="table-container"><table><thead><tr><th>Parameter</th><th>Recommendation</th></tr></thead><tbody><tr><td>Public/Private Key Pair</td><td>The key pair created in Step 2</td></tr><tr><td>Security Group Selection</td><td>Create New Security Group</td></tr><tr><td>- Existing Security Group ID</td><td>Leave blank</td></tr><tr><td>Your Public IP address</td><td>Leave blank unless you want to restrict connections to a specific IP</td></tr><tr><td>Subnet Options</td><td>Create New VPC and Subnet</td></tr><tr><td>- Existing Subnet ID</td><td>Leave blank</td></tr><tr><td>- Existing VPC ID</td><td>Leave blank</td></tr></tbody></table></div><h6>Instance Configuration</h6><div class="table-container"><table><thead><tr><th>Parameter</th><th>Recommendation</th></tr></thead><tbody><tr><td>Instance Type</td><td><code class="inline-code">t3.small</code>*</td></tr><tr><td>Case Sensitivity</td><td><code class="inline-code">sensitive</code> (unless the entire team is using windows exclusively)</td></tr><tr><td>P4 Auth ID</td><td>A descriptive name like <code class="inline-code">my-game-name-p4-server</code></td></tr></tbody></table></div><p>*In theory, a student team would not need an instance this big, but the AWS marketplace template does not support smaller instances.</p><h6>Depot Volume</h6><p>The next three sections configure storage for the server. The recommendations represent the cheapest and smallest configuration for a small student game. If your game is larger, consider increasing the storage sizes.</p><div class="table-container"><table><thead><tr><th>Parameter</th><th>Recommendation</th></tr></thead><tbody><tr><td>Depot Volume Type</td><td><code class="inline-code">st1</code> (for a cheaper HDD)</td></tr><tr><td>Depot Volume Size</td><td>128</td></tr><tr><td>Depot Provisioned IOPS</td><td>3000</td></tr><tr><td>Depot Throughput (MB/s)</td><td>125</td></tr></tbody></table></div><h6>Metadata (Database) Volume</h6><div class="table-container"><table><thead><tr><th>Parameter</th><th>Recommendation</th></tr></thead><tbody><tr><td>Metadata Volume Type</td><td><code class="inline-code">gp3</code></td></tr><tr><td>Metadata Volume Size (GiB)</td><td>16</td></tr><tr><td>Metadata Provisioned IOPS</td><td>3000</td></tr><tr><td>Metadata Throughput (MB/s)</td><td>125</td></tr></tbody></table></div><h6>Log Volume</h6><div class="table-container"><table><thead><tr><th>Parameter</th><th>Recommendation</th></tr></thead><tbody><tr><td>Log Volume Type</td><td><code class="inline-code">gp3</code></td></tr><tr><td>Log Volume Size (GiB)</td><td>16</td></tr><tr><td>Log Provisioned IOPS</td><td>3000</td></tr><tr><td>Log Throughput (MB/s)</td><td>125</td></tr></tbody></table></div><h6>Tags and Labels</h6><div class="table-container"><table><thead><tr><th>Parameter</th><th>Recommendation</th></tr></thead><tbody><tr><td>Prefix for all resources</td><td>An acronym or shortened version of your game's name</td></tr><tr><td>Environment Label (e.g., dev, test, prod)</td><td>dev</td></tr><tr><td>Owner (Optional)</td><td>Your name or team's name</td></tr><tr><td>Notification Email (Optional)</td><td>Your email or team's email</td></tr></tbody></table></div><h6>Backup Settings</h6><div class="table-container"><table><thead><tr><th>Parameter</th><th>Recommendation</th></tr></thead><tbody><tr><td>Enable Backups?</td><td>true</td></tr><tr><td>Backup Retention (days)</td><td>30</td></tr></tbody></table></div><h6>Advanced Options</h6><p>Do not modify these settings.</p><h6>Step 5: Deploying the Stack</h6><p>1. Select <strong>Next</strong> at the bottom of the <strong>Specify Stack Details</strong> page.</p><p>2. On the <strong>Configure stack options</strong> page, in the <strong>Capabilities</strong> section, check the box to acknowledge the required capabilities.</p><p>3. Click <strong>Next</strong>.</p><p>4. On the <strong>Review and Create</strong> page, review your parameters and click <strong>Submit</strong> to begin deployment.</p><p>5. Wait about five minutes for the deployment to complete and the stack status to update to <strong>CREATE_COMPLETE</strong>.</p><h6>Step 6: Deployment Outputs &amp; P4 Credentials</h6><p>After the deployment completes, note down three important values from the <strong>Outputs</strong> tab of the stack:</p><div class="table-container"><table><thead><tr><th>Value</th><th>Definition</th></tr></thead><tbody><tr><td>HelixCoreInstanceID</td><td>Instance ID for the new P4 EC2 instance</td></tr><tr><td>PerforcePrivateIP</td><td>Private IP address for P4 Server</td></tr><tr><td>PerforcePublicIP</td><td>Public IP address for P4 Server</td></tr></tbody></table></div><p>These values help determine the login credentials for your P4 server:</p><div class="table-container"><table><thead><tr><th>Value</th><th>Format</th></tr></thead><tbody><tr><td>Server</td><td><code class="inline-code">ssl:PerforcePublicIP:1666</code></td></tr><tr><td>User</td><td><code class="inline-code">perforce</code></td></tr><tr><td>Password</td><td>The <code class="inline-code">HelixCoreInstanceID</code> noted above</td></tr></tbody></table></div><h5>Downloading P4V</h5><p>P4V is the application we will use to interface with our P4 server and manage files.</p><p>1. Visit the <a href="https://portal.perforce.com/s/downloads?product=Helix%20Visual%20Client%20%28P4V%29" target="_blank">P4V download page</a>.</p><p>2. Select your OS in the <strong>Family</strong> dropdown.</p><p>3. Click <strong>Download</strong>.</p><p>4. Install P4V as you would any other application on your platform, and input the credentials noted down earlier when prompted.</p><h5>Configuring Security</h5><p>Security configurations are essential to ensure unauthorized users cannot access your server. To make these changes, you must access P4Admin via P4V after connecting to the server using the <code class="inline-code">perforce</code> account.</p><h6>Setting the Server Security Level</h6><p>1. Open P4V.</p><p>2. Under the <strong>Tools</strong> menu, select <strong>Administration</strong> to open P4Admin.</p><p>3. In P4Admin, select the <strong>Configurables</strong> tab.</p><p>4. Double-click the <strong>security</strong> entry to open the config dialog box.</p><p><img src="assets/P4AdminTutorial1.png" alt="security box in Configurables tab" class="devlog-image"></p><p>5. Ensure the value is set to <strong>4</strong>. If not, type <code class="inline-code">4</code> in the new value field.</p><p>6. Click <strong>Set</strong> if the value needed to be updated.</p><h6>Changing the Super User Password</h6><p>1. Open P4V.</p><p>2. In P4V, open the <strong>Connection</strong> menu and click <strong>Change Password...</strong>.</p><p>3. In the dialog box, enter the old password, then enter a new password that is at least eight characters long, contains both uppercase and lowercase letters, and includes one or more special characters or numbers.</p><p>4. Confirm the new password and click <strong>OK</strong>.</p><h6>Changing Other Security Configurables</h6><p>Other configurable values in the <strong>Configurables</strong> tab should also be set to specific values to ensure the security of the server. Double-check these settings to ensure they match:</p><p>1. Open P4V.</p><p>2. Under the <strong>Tools</strong> menu, click <strong>Administration</strong> to open P4Admin.</p><p>3. In P4Admin, open the <strong>Configurables</strong> tab.</p><p>4. Check the value of each configurable in the list below. If it does not match, double-click to update it:</p><div class="table-container"><table><thead><tr><th>Configurable Name</th><th>Value</th><th>Description</th></tr></thead><tbody><tr><td>dm.user.noautocreate</td><td>2</td><td>Prevents automatic user creation. Only you, as the administrator, should create accounts for team members.</td></tr><tr><td>dm.user.setinitialpasswd</td><td>0</td><td>Ensures that only super users can set initial passwords for other users.</td></tr><tr><td>dm.user.resetpassword</td><td>1</td><td>Forces new users to reset their password on their initial login.</td></tr><tr><td>dm.info.hide</td><td>1</td><td>Hides server version information from unauthorized users.</td></tr><tr><td>dm.user.hideinvalid</td><td>1</td><td>Hides whether an authentication failure is due to an incorrect username.</td></tr><tr><td>run.users.authorize</td><td>1</td><td>Hides user details from unauthenticated users.</td></tr></tbody></table></div><h6>Configuring Typemap Settings</h6><p>The typemap is one of the biggest benefits of Helix Core. It is a configuration that tells the server how to version specific file types. If you are using a game engine, it is critical to configure the typemap to ensure binary assets are locked (exclusive checkout) so they can only be edited by one person at a time.</p><p>1. Open a command prompt or terminal, enter the command <code class="inline-code">p4 typemap</code>, and press <strong>Enter</strong>.</p><p>2. The typemap specification will open in the default text editor you specified during P4V installation.</p><p>3. If you are using a game engine like Unity, Unreal, or Godot, paste in the <strong>Universal Game Engine Typemap</strong> below. Otherwise, research how to write a custom typemap suited to your project's file types.</p><p>4. After writing or pasting the typemap, save and close the file.</p><details><summary>Universal Game Engine Typemap</summary><pre><code class="language-text"># Perforce File Type Mapping Specifications.
+#
+#  TypeMap:    a list of filetype mappings; one per line.
+#        Each line has two elements:
+#
+#          Filetype: The filetype to use on 'p4 add'.
+#
+#          Path:     File pattern which will use this filetype.
+#
+# See 'p4 help typemap' for more information.
+
+TypeMap:
+    text+l      //....md5anim     ## Unity3D files that should be locked
+    text+l      //....md5mesh     ## Unity3D files that should be locked
+    text+l      //....meta        ## Unity3D files that should be locked
+
+    text+w      //....config      ## Auto-updated files - reconcile offline work carefully
+    text+w      //....deps.json   ## Auto-updated files - reconcile offline work carefully
+    text+w      //....DotSettings  ## Auto-updated files - reconcile offline work carefully
+    text+w      //....ini         ## Auto-updated files - reconcile offline work carefully
+    text+w      //....json        ## Auto-updated files - reconcile offline work carefully
+    text+w      //....log         ## Auto-updated files - reconcile offline work carefully
+    text+w      //....modules     ## Auto-updated files - reconcile offline work carefully
+    text+w      //....pdm         ## Auto-updated files - reconcile offline work carefully
+    text+w      //....runtimeconfig.json    ## Auto-updated files - reconcile offline work carefully
+    text+w      //....target      ## Auto-updated files - reconcile offline work carefully
+    text+w      //....uatbuildrecord ## Auto-updated files - reconcile offline work carefully
+    text+w      //....uproject    ## Auto-updated files - reconcile offline work carefully
+    text+w      //....version     ## Auto-updated files - reconcile offline work carefully
+    text+w      //....xml         ## Auto-updated files - reconcile offline work carefully
+    
+
+    binary+Fl   //....avi         ## Already compressed - store uncompressed and lock
+    binary+Fl   //....bz2         ## Already compressed - store uncompressed and lock
+    binary+Fl   //....gif         ## Already compressed - store uncompressed and lock
+    binary+Fl   //....gz          ## Already compressed - store uncompressed and lock
+    binary+Fl   //....jar         ## Already compressed - store uncompressed and lock
+    binary+Fl   //....jpeg        ## Already compressed - store uncompressed and lock
+    binary+Fl   //....jpg         ## Already compressed - store uncompressed and lock
+    binary+Fl   //....mov         ## Already compressed - store uncompressed and lock
+    binary+Fl   //....mpg         ## Already compressed - store uncompressed and lock
+    binary+Fl   //....rar         ## Already compressed - store uncompressed and lock
+    binary+Fl   //....tif         ## Already compressed - store uncompressed and lock
+    binary+Fl   //....tiff        ## Already compressed - store uncompressed and lock
+    binary+Fl   //....zip         ## Already compressed - store uncompressed and lock
+
+    binary+l   //....a           ## Standard binary - store compressed and lock
+    binary+l   //....aac         ## Standard binary - store compressed and lock
+    binary+l   //....aar         ## Standard binary - store compressed and lock
+    binary+l   //....aas         ## Standard binary - store compressed and lock
+    binary+l   //....ae          ## Standard binary - store compressed and lock
+    binary+l   //....ai          ## Standard binary - store compressed and lock
+    binary+l   //....aiff        ## Standard binary - store compressed and lock
+    binary+l   //....anim        ## Standard binary - store compressed and lock
+    binary+l   //....apk         ## Standard binary - store compressed and lock
+    binary+l   //....asset       ## Standard binary - store compressed and lock
+    binary+l   //....bik         ## Standard binary - store compressed and lock
+    binary+l   //....bin         ## Standard binary - store compressed and lock
+    binary+l   //....blend       ## Standard binary - store compressed and lock
+    binary+l   //....bmp         ## Standard binary - store compressed and lock
+    binary+l   //....bnk         ## Standard binary - store compressed and lock
+    binary+l   //....btr         ## Standard binary - store compressed and lock
+    binary+l   //....celtx       ## Standard binary - store compressed and lock
+    binary+l   //....cfm         ## Standard binary - store compressed and lock
+    binary+l   //....class       ## Standard binary - store compressed and lock
+    binary+l   //....clip        ## Standard binary - store compressed and lock
+    binary+l   //....controller  ## Standard binary - store compressed and lock
+    binary+l   //....cubemap     ## Standard binary - store compressed and lock
+    binary+l   //....dae         ## Standard binary - store compressed and lock
+    binary+l   //....data        ## Standard binary - store compressed and lock
+    binary+l   //....dds         ## Standard binary - store compressed and lock
+    binary+l   //....demo        ## Standard binary - store compressed and lock
+    binary+l   //....doc         ## Standard binary - store compressed and lock
+    binary+l   //....docx        ## Standard binary - store compressed and lock
+    binary+l   //....dot         ## Standard binary - store compressed and lock
+    binary+l   //....ear         ## Standard binary - store compressed and lock
+    binary+l   //....fbx         ## Standard binary - store compressed and lock
+    binary+l   //....flac        ## Standard binary - store compressed and lock
+    binary+l   //....fnt         ## Standard binary - store compressed and lock
+    binary+l   //....ibl         ## Standard binary - store compressed and lock
+    binary+l   //....ico         ## Standard binary - store compressed and lock
+    binary+l   //....ip          ## Standard binary - store compressed and lock
+    binary+l   //....light       ## Standard binary - store compressed and lock
+    binary+l   //....lighting    ## Standard binary - store compressed and lock
+    binary+l   //....lwo         ## Standard binary - store compressed and lock
+    binary+l   //....m4a         ## Standard binary - store compressed and lock
+    binary+l   //....ma          ## Standard binary - store compressed and lock
+    binary+l   //....mask        ## Standard binary - store compressed and lock
+    binary+l   //....mat         ## Standard binary - store compressed and lock
+    binary+l   //....mb          ## Standard binary - store compressed and lock
+    binary+l   //....mp3         ## Standard binary - store compressed and lock
+    binary+l   //....mp4         ## Standard binary - store compressed and lock
+    binary+l   //....navmesh     ## Standard binary - store compressed and lock
+    binary+l   //....obj         ## Standard binary - store compressed and lock
+    binary+l   //....odg         ## Standard binary - store compressed and lock
+    binary+l   //....odp         ## Standard binary - store compressed and lock
+    binary+l   //....ods         ## Standard binary - store compressed and lock
+    binary+l   //....odt         ## Standard binary - store compressed and lock
+    binary+l   //....ogg         ## Standard binary - store compressed and lock
+    binary+l   //....otf         ## Standard binary - store compressed and lock
+    binary+l   //....otg         ## Standard binary - store compressed and lock
+    binary+l   //....ots         ## Standard binary - store compressed and lock
+    binary+l   //....ott         ## Standard binary - store compressed and lock
+    binary+l   //....overrideController ## Standard binary - store compressed and lock
+    binary+l   //....pac         ## Standard binary - store compressed and lock
+    binary+l   //....pdf         ## Standard binary - store compressed and lock
+    binary+l   //....physicMaterial ## Standard binary - store compressed and lock
+    binary+l   //....png         ## Standard binary - store compressed and lock
+    binary+l   //....ppt         ## Standard binary - store compressed and lock
+    binary+l   //....pptx        ## Standard binary - store compressed and lock
+    binary+l   //....prefab      ## Standard binary - store compressed and lock
+    binary+l   //....prefab.unity ## Standard binary - store compressed and lock
+    binary+l   //....psb         ## Standard binary - store compressed and lock
+    binary+l   //....psd         ## Standard binary - store compressed and lock
+    binary+l   //....raw         ## Standard binary - store compressed and lock
+    binary+l   //....renderTexture ## Standard binary - store compressed and lock
+    binary+l   //....res         ## Standard binary - store compressed and lock
+    binary+l   //....response    ## Standard binary - store compressed and lock
+    binary+l   //....roq         ## Standard binary - store compressed and lock
+    binary+l   //....rpt         ## Standard binary - store compressed and lock
+    binary+l   //....shadow      ## Standard binary - store compressed and lock
+    binary+l   //....skp         ## Standard binary - store compressed and lock
+    binary+l   //....so          ## Standard binary - store compressed and lock
+    binary+l   //....sxw         ## Standard binary - store compressed and lock
+    binary+l   //....tar         ## Standard binary - store compressed and lock
+    binary+l   //....terrain     ## Standard binary - store compressed and lock
+    binary+l   //....tga         ## Standard binary - store compressed and lock
+    binary+l   //....tres        ## Standard binary - store compressed and lock
+    binary+l   //....ttf         ## Standard binary - store compressed and lock
+    binary+l   //....u           ## Standard binary - store compressed and lock
+    binary+l   //....uasset      ## Standard binary - store compressed and lock
+    binary+l   //....udk         ## Standard binary - store compressed and lock
+    binary+l   //....umap        ## Standard binary - store compressed and lock
+    binary+l   //....unity       ## Standard binary - store compressed and lock
+    binary+l   //....unitypackage ## Standard binary - store compressed and lock
+    binary+l   //....upk         ## Standard binary - store compressed and lock
+    binary+l   //....war         ## Standard binary - store compressed and lock
+    binary+l   //....wav         ## Standard binary - store compressed and lock
+    binary+l   //....webm        ## Standard binary - store compressed and lock
+    binary+l   //....wma         ## Standard binary - store compressed and lock
+    binary+l   //....wmv         ## Standard binary - store compressed and lock
+    binary+l   //....xls         ## Standard binary - store compressed and lock
+    binary+l   //....xlsx        ## Standard binary - store compressed and lock
+
+    binary+w   //....app         ## Build output - stays writable, be sure to reconcile offline work
+    binary+w   //....dll         ## Build output - stays writable, be sure to reconcile offline work
+    binary+w   //....dylib       ## Build output - stays writable, be sure to reconcile offline work
+    binary+w   //....exe         ## Build output - stays writable, be sure to reconcile offline work
+    binary+w   //....exp         ## Build output - stays writable, be sure to reconcile offline work
+    binary+w   //....ipa         ## Build output - stays writable, be sure to reconcile offline work
+    binary+w   //....lib         ## Build output - stays writable, be sure to reconcile offline work
+    binary+w   //....pdb         ## Build output - stays writable, be sure to reconcile offline work
+    binary+w   //....rc          ## Build output - stays writable, be sure to reconcile offline work
+    binary+w   //....stub        ## Build output - stays writable, be sure to reconcile offline work
+    binary+w   //....ubulk       ## Build output - stays writable, be sure to reconcile offline work
+    binary+w   //....uexp        ## Build output - stays writable, be sure to reconcile offline work
+    
+    text+x    //....sh          ## Make executable for mac and linux
+    text+x    //....command     ## Make executable for mac
+
+    binary+wS2  //..._BuiltData.uasset  ## Large regenerable files - keep 2 versions, be sure to reconcile offline work
+</code></pre></details><h5>Creating a Stream Depot</h5><p>A depot is the highest-level bucket in P4, functioning similarly to a repository in Git. Streams in P4 are like branches in Git, allowing developers to create separate channels to work on the project. To create a stream depot:</p><p>1. Open P4V.</p><p>2. Select <strong>Tools</strong> &gt; <strong>Administration</strong> to open P4Admin.</p><p>3. In P4Admin, select the <strong>Depots</strong> tab.</p><p>4. Right-click the generic <code class="inline-code">depot</code> entry and delete it.</p><p>5. Select <strong>File</strong> &gt; <strong>New</strong> &gt; <strong>Depot</strong>.</p><p><img src="assets/P4AdminTutorial2.png" alt="depot creation in P4Admin" class="devlog-image"></p><p>6. Name the depot after your project.</p><p>7. Click <strong>OK</strong>.</p><p>8. In the next dialog box, ensure the <strong>Depot type</strong> is set to <strong>stream</strong>.</p><p>9. Add a description to the depot.</p><p>10. Click <strong>OK</strong> to create the depot.</p><h5>Creating a Main Stream</h5><p>Streams are the primary way of managing branching and workflows in P4. Every project needs a top-level mainline stream; beyond that, creating other streams is at the user's discretion. To create a main stream:</p><p>1. In P4V, select the <strong>View</strong> menu and click <strong>Stream Graph</strong> (or press <code class="inline-code">Alt</code> + <code class="inline-code">7</code>). A <strong>Stream Graph</strong> window will appear in the right-hand panel.</p><p><img src="assets/P4VTutorial1.png" alt="stream graph in view tab" class="devlog-image"></p><p>2. Right-click anywhere inside the <strong>Stream Graph</strong> window and choose <strong>New Stream...</strong>.</p><p>3. Establish a stream naming convention for your game. For example, we shortened <em>Killing Slime</em> to <code class="inline-code">KS</code> and named our streams <code class="inline-code">KS<em>streamName</code>, so this mainline stream was named <code class="inline-code">KS</em>main</code>.</p><p>4. In the <strong>Stream type</strong> field, select <strong>mainline</strong>.</p><p>5. In the <strong>Depot</strong> field, click <strong>Browse...</strong>, select the depot you created earlier, and click <strong>OK</strong>.</p><p>6. Enter a description for the stream.</p><p>7. Ensure all options in the dialog are configured correctly (e.g., checking or unchecking specific options like importing files).</p><p><img src="assets/P4VTutorial2.png" alt="checkboxes" class="devlog-image"></p><p>8. Click <strong>OK</strong> to create the stream.</p><h5>Creating a Workspace</h5><p>In P4, a workspace is a directory on your local machine that maps to a copy of a stream. Developers make changes locally and submit them back to the stream from their workspaces. To create a workspace:</p><p>1. In the <strong>Stream Graph</strong> window, right-click the main stream you just created and select <strong>New Workspace...</strong>.</p><p>2. Enter a <strong>Workspace name</strong> following a clear pattern, such as <code class="inline-code">username<em>computerName</em>projectName</code>.</p><p>3. Set the <strong>Workspace root</strong> to the directory on your computer where project files should be stored.</p><p>4. In the <strong>Advanced</strong> tab under <strong>File Options</strong>, select <strong>Modtime</strong>, <strong>Rmdir</strong>, and <strong>Revert unchanged files</strong>.</p><p><img src="assets/P4VTutorial3.png" alt="file options" class="devlog-image"></p><p>5. Select <strong>Switch to new workspace immediately</strong> and <strong>Automatically get all revisions</strong>.</p><p>6. Click <strong>OK</strong> to create and switch to the new workspace.</p><p>In the left-hand pane of P4V, select the <strong>Workspace</strong> tab to view your local workspace files. You can change workspaces by clicking the dropdown menu right under the <strong>Workspace</strong> tab header.</p><h5>Writing a .p4ignore</h5><p>A <code class="inline-code">.p4ignore</code> file is just like a <code class="inline-code">.gitignore</code> file; it tells Helix Core which files in your workspace should not be versioned or uploaded to the depot. To configure a <code class="inline-code">.p4ignore</code>:</p><h6>Step 1: Creating the File</h6><p>1. In your workspace root, create a new text file named <code class="inline-code">.p4ignore</code>.</p><p>2. Open the file in a text editor.</p><p>3. Specify the paths that should be ignored, writing one entry per line, or copy one of the engine-specific templates provided below.</p><p>Key syntax details:</p><ul><li>Paths are case-sensitive.</li><li>A <code class="inline-code">!</code> can be prefixed to force-include (un-ignore) a path.</li><li>A <code class="inline-code">/</code> at the end of a path ignores an entire directory.</li><li>A <code class="inline-code">*</code> matches characters within a single directory level (does not match path separators <code class="inline-code">/</code> or <code class="inline-code">\</code>).</li><li>A <code class="inline-code"><em></em></code> matches any characters, including directory separators, across multiple levels.</li></ul><p>4. Save the file.</p><details><summary>Unreal Engine example</summary><pre><code class="language-text">## Universal P4IGNORE for Unreal Engine Projects
+## Works with both game projects and custom engine source
+## Optimized pattern usage based on Perforce P4IGNORE documentation
+
+# The syntax for P4IGNORE files is not the same as Perforce syntax.
+# Key differences from .gitignore:
+# - A / at the start means "relative to this p4ignore file"
+# - A / at the end means "directories only"
+# - * matches substrings but NOT path separators (like P4 wildcard)
+# - ** matches substrings INCLUDING path separators (like P4 "..." wildcard)
+# - ! at the start excludes the file specification
+
+###############################################################################
+# Visual Studio Solution and Project Files
+###############################################################################
+
+# Ignore root Visual Studio solution files only
+/*.sln
+/*/*.sln
+
+# Visual Studio temp files (but exclude when .pdb is in folder path)
+.vs/
+*.pdb
+!*.pdb/
+*.suo
+*.opensdf
+*.sdf
+*.tmp
+*.mdb
+obj/
+*.vcxproj
+
+# User-specific Visual Studio files
+**/launchSettings.json
+*.csproj.user
+*.csproj.cache
+*.csproj.nuget.*
+*.csproj.AssemblyReference.cache
+# Note: DO NOT ignore *.csproj.props - these are shared build configuration files
+!*.csproj.props
+
+# Built binaries and temporary build files
+obj/
+*.csproj.AssemblyReference.cache
+
+###############################################################################
+# Git Integration (if migrating from Git)
+###############################################################################
+
+.git/
+.gitignore
+.gitattributes
+.gitmodules
+.tgitconfig
+
+###############################################################################
+# JetBrains IDEs
+###############################################################################
+
+.idea/
+!.idea/runConfigurations
+.gradle/
+
+###############################################################################
+# Python
+###############################################################################
+
+__pycache__/
+*.pyc
+*.egg-info/
+
+###############################################################################
+# Unix/Mac Specific
+###############################################################################
+
+FileOpenOrder/
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+.ue4dependencies
+*~
+.DS_Store
+
+###############################################################################
+# Unreal Engine - Core Ignores
+###############################################################################
+
+# Samples, FeaturePacks, Templates at root only
+/Samples/
+/*/Samples/
+/FeaturePacks/
+/*/FeaturePacks/
+/Templates/
+/*/Templates/
+# Saved and Intermediate directories (generated content)
+# These can be at any depth, so use **/
+**/Saved/
+**/Intermediate/
+
+# Derived Data Cache - use specific patterns to avoid matching source code
+**/DerivedDataCache/Boot.ddc
+**/DerivedDataCache/**/*.udd
+**/DerivedDataCache/
+!**/Source/**/DerivedDataCache/
+
+# Personal workspace configuration
+.p4config.txt
+.p4sync.txt
+
+# Crash reports
+crashinfo--*
+
+# Linux project files
+*.pro
+*.pri
+*.kdev4
+
+# Obj-C/Swift specific
+*.hmap
+*.ipa
+*.dSYM.zip
+Binaries/**/*.dSYM
+Binaries/**/*.dsym
+
+# VSCode workspace files
+*.code-workspace
+
+# UGS folder (per-workspace)
+.ugs/
+
+# Local builds
+/LocalBuilds/
+!ArchiveForUGS-Perforce/
+
+###############################################################################
+# Engine-Specific Paths
+# Use **/ prefix so these work whether Engine is at root or nested
+###############################################################################
+
+# UnrealBuildTool logs and configuration
+Engine/Programs/UnrealBuildTool/*.txt
+Engine/Programs/UnrealBuildTool/Log*.json
+Engine/Programs/UnrealBuildTool/Log*.uba
+*.uatbuildrecord
+
+# Build receipts
+Engine/Build/Receipts/
+
+# C# program intermediates and saved folders
+Engine/Source/Programs/*/obj/
+Engine/Programs/*/Saved/
+
+# build artifacts
+*.deps.json
+*.runtimeconfig.json
+**/bin/**/ref/
+
+# Exceptions for build artifacts
+!Engine/Binaries/ThirdParty/**/*.deps.json
+!Engine/Binaries/ThirdParty/**/*.runtimeconfig.json
+!Engine/Binaries/DotNET/**/*.deps.json
+!Engine/Binaries/DotNET/**/*.runtimeconfig.json
+
+# Test coverage files
+.msCoverageSourceRootsMapping_*
+CoverletSourceRootsMapping_*
+
+# Documentation tools output
+Engine/Binaries/DotNET/UnrealBuildTool.xml
+Engine/Binaries/DotNET/AutomationScripts/BuildGraph.Automation.xml
+
+# Version files created by UBT
+Engine/Binaries/**/*.version
+
+# Export files (linker-generated, not source)
+Engine/Binaries/**/*.exp
+
+# Swarm local save files
+Engine/Binaries/DotNET/SwarmAgent.DeveloperOptions.xml
+Engine/Binaries/DotNET/SwarmAgent.Options.xml
+
+# HoloLens WMRInterop autogenerated files
+Engine/Source/ThirdParty/WindowsMixedRealityInterop/packages/
+Engine/Source/ThirdParty/WindowsMixedRealityInterop/MixedRealityInteropHoloLens/Generated Files/
+Engine/Source/ThirdParty/WindowsMixedRealityInterop/MixedRealityInteropHoloLens/x64/
+Engine/Source/ThirdParty/WindowsMixedRealityInterop/MixedRealityInteropHoloLens/ARM64/
+Engine/Source/ThirdParty/WindowsMixedRealityInterop/MixedRealityInterop/x64/
+Engine/Source/ThirdParty/WindowsMixedRealityInterop/MixedRealityInterop/ARM64/
+
+###############################################################################
+# DCC Application Autosave and Temporary Files
+# Using specific extensions and patterns to avoid catching legitimate files
+###############################################################################
+
+# Blender - specific extensions only
+*.blend1
+*.blend2
+*.blend@
+untitled.blend
+
+# Autodesk Maya
+*.ma.swatches
+*.mb.swatches
+*_incrementalSave_*.ma
+*_incrementalSave_*.mb
+incrementalSave/
+scenes/edits/
+
+# Autodesk 3ds Max
+*.max.bak
+autoback/
+MaxStart.max
+
+# Cinema 4D
+*.c4d.zip
+*.c4d~
+
+# Houdini
+*.hip.bak
+*.hipnc.bak
+*.hiplc.bak
+
+# ZBrush
+*.ZTL.bak
+*.ZPR.bak
+QuickSave*
+
+# Substance Painter/Designer
+*.spp.bak
+*.sbs.bak
+*.sbsar.bak
+
+# Adobe Creative Suite - full extensions to avoid false matches
+*.psd~
+*.ai~
+*.indd~
+*.fla~
+*.aep~
+*.prproj~
+Adobe After Effects Auto-Save/
+Adobe Premiere Pro Auto-Save/
+Photoshop Temp*
+
+# Audio Applications
+
+# Pro Tools
+*.ptx~
+*.ptf~
+Session File Backups/
+
+# Reaper
+*.rpp-bak
+*.rpp~
+
+# Logic Pro
+*.logic/Alternatives/
+*.logic/Backups/
+
+# Cubase/Nuendo
+*.cpr.bak
+*.npr.bak
+
+# Ableton Live
+*.als~
+
+# FMOD
+*.fspro.bak
+*.fspro~
+
+# Wwise
+*.wproj.bak
+*.wsettings.bak
+
+# General DCC patterns (specific directory names only)
+.mayaSwatches/
+
+# Python Patterns
+.venv/
+
+# AI Stuff
+.mcp.json
+.ai/
+</code></pre></details><details><summary>Unity Engine example</summary><pre><code class="language-text"># Unity Files and Folders to ignore
+Library/
+Temp/
+Obj/
+Build/
+Builds/
+UserSettings/
+MemoryCaptures/
+Logs/
+Assets/AssetStoreTools/
+Assets/AddressableAssetsData/*/*.bin*
+Assets/StreamingAssets/aa.meta
+.collabignore
+# Build files to ignore
+*.apk
+*.unitypackage
+
+# Gradle cache directory
+.gradle
+
+# Autogenerated project files
+/Assets/Plugins/Editor/JetBrains*
+.vs
+ExportedObj/
+.consulo
+*.csproj
+*.unityproj
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Unity3D generated meta files
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+</code></pre></details><h6>Step 2: Testing the File</h6><p>Now, we need to test the file to ensure it works correctly.</p><p>1. Add a file to the workspace that should be ignored (e.g., a build artifact or temp file).</p><p>2. Find the file in the P4V workspace window and select it.</p><p>3. Click the <strong>Add</strong> button in the toolbar.</p><p>4. Choose <strong>default</strong> from the dropdown for <strong>Add files to pending changelist:</strong>.</p><p>5. Click <strong>OK</strong>.</p><p>6. Open the <strong>View</strong> menu and click <strong>Pending</strong> to open the <strong>Pending</strong> tab.</p><p>7. If the <strong>default</strong> changelist does not expand to show the ignored file, then our <code class="inline-code">.p4ignore</code> file is working.</p><p><img src="assets/P4VTutorial4.png" alt="empty changelist" class="devlog-image"></p><h6>Step 3: Submitting the File to the Server</h6><p>Now, we must submit the <code class="inline-code">.p4ignore</code> file to the server so that all team members follow its rules.</p><p>1. In the <strong>Workspace</strong> tab in the left-hand panel, select the <code class="inline-code">.p4ignore</code> file.</p><p>2. Click the <strong>Add</strong> button in the toolbar.</p><p>3. Choose <strong>default</strong> from the dropdown for <strong>Add files to pending changelist:</strong>.</p><p>4. Click <strong>OK</strong>.</p><p>5. Open the <strong>View</strong> menu and click <strong>Pending</strong>. This time, the <strong>default</strong> changelist should expand to show <code class="inline-code">.p4ignore</code>.</p><p>6. Click the <strong>default</strong> changelist and click the <strong>Submit</strong> button in the toolbar.</p><p>7. Enter a description like "Add .p4ignore".</p><p>8. Click <strong>Submit</strong>.</p><h5>Adding Your Game</h5><p>Now, it is finally time to add your game to the project. If you are creating a new game, simply start working in the workspace you created until you reach a point where you would normally make your initial commit. If you are importing an existing game, clone it into the workspace, but make sure to delete any files or folders that were only relevant under the previous version control system (such as <code class="inline-code">.gitignore</code>, <code class="inline-code">.gitattributes</code>, <code class="inline-code">.git/</code>, and <code class="inline-code">.github/</code>).</p><h5>Adding and Submitting Files</h5><p>This is the core loop of working with P4: adding and submitting files to contribute changes, or getting the latest revision of your team's work. To add a brand-new file (or your entire game if you are porting it to P4):</p><p>1. Add the new file(s) in your workspace.</p><p>2. Open the <strong>Workspace</strong> tree in the left panel.</p><p>3. Select the file(s) you added and click the <strong>Add</strong> button in the toolbar.</p><p>4. Choose <strong>default</strong> from the dropdown menu for <strong>Add files to pending changelist:</strong>.</p><p><em>Note: A changelist in P4 is a group of new or changed files that will be submitted to the stream. Think of it like a commit in Git.</em></p><p>5. Click <strong>OK</strong>.</p><p>6. Open the <strong>View</strong> menu and click <strong>Pending</strong>. The <strong>default</strong> changelist should expand to include the files you added.</p><p>7. Click the <strong>default</strong> changelist, and click the <strong>Submit</strong> button in the toolbar.</p><p>8. Enter a description of your changes.</p><p>9. Click <strong>Submit</strong>. If you are submitting a large project for the first time, this process may take several minutes.</p><h5>Working with Existing Versioned Files</h5><p>By default, files in your workspace are marked as read-only to prevent accidental edits. To edit files in P4, you must check them out, which alerts your team that you are working on them.</p><p>1. Open the <strong>Workspace</strong> tree in the left panel.</p><p>2. Click <strong>Get Latest</strong> in the toolbar to fetch the latest changes from the server.</p><p>3. Select the files you wish to edit and click the <strong>Checkout</strong> button in the toolbar.</p><p>4. Choose <strong>default</strong> from the dropdown menu for <strong>Add files to pending changelist:</strong>.</p><p>5. Click <strong>OK</strong>.</p><p>6. When you are finished editing, open the <strong>View</strong> menu and click <strong>Pending</strong>. The <strong>default</strong> changelist should expand to show your edited files.</p><p>7. Select the <strong>default</strong> changelist and click the <strong>Submit</strong> button in the toolbar.</p><p>8. Enter a description of your changes.</p><p>9. Click <strong>Submit</strong>.</p><h5>Game Engine Integrations</h5><p>Game engine integrations allow you to work with versioned files directly within your editor, removing the need to switch to P4V to check out files. While integrations exist for both Unreal and Unity, this guide covers the Unity integration. To set up the Unity integration:</p><p>1. Open your project in Unity.</p><p>2. Select <strong>Edit</strong> &gt; <strong>Project Settings</strong>.</p><p>3. Select the <strong>Version Control</strong> tab on the left and set the <strong>Mode</strong> to <strong>Perforce</strong>.</p><p>4. Enter your P4 credentials, workspace name, and server address (including the leading <code class="inline-code">ssl:</code> and trailing <code class="inline-code">:port</code>, for example: <code class="inline-code">ssl:55.55.55.55:1666</code>).</p><p><img src="assets/UnityTutorial1.png" alt="unity settings" class="devlog-image"></p><p>5. Now, within your Unity project, you can right-click any asset and select <strong>Version Control</strong> to <strong>Check Out</strong>, <strong>Submit</strong>, or <strong>Revert</strong> it.</p><h5>Creating User Accounts and Onboarding Your Team</h5><p>Now, we need to create user accounts for our team. Since we are on the free tier, we only get five user accounts to share. To create your users' accounts:</p><p>1. Open P4V.</p><p>2. Select <strong>Tools</strong> &gt; <strong>Administration</strong> to open P4Admin.</p><p>3. Select the <strong>Users &amp; Groups</strong> tab in the right panel.</p><p>4. Click the <strong>File</strong> menu, then select <strong>New</strong> &gt; <strong>User...</strong>.</p><p>5. In the dialog box, enter the user's email, username, full name, and a one-time password.</p><p>Send your team members their usernames and passwords, along with the P4 server address and port, so they can log in, change their passwords, and get started. It is highly recommended to record a video showing them how to create a workspace, add files, edit files, and submit a changelist. Additionally, consider working with them in person or over a screen-share call to help them get acclimated to P4V.</p><h4>How We Used P4</h4><p>Using P4 like Git, with feature branches and multiple streams, is nearly impossible on the free tier and defeats its main advantages. We initially tried to create a new task stream for each task, but we quickly realized that the 20-workspace limit made this approach unfeasible.</p><p>We eventually settled on a very simple stream pattern: one mainline stream where the main build of the game lives, and one dev stream where everyone makes their changes. While this might sound disorganized in theory, in practice it worked remarkably well for our small-scale game. Furthermore, if a large-scale feature needs prototyping, there is still room to open a third long-term stream.</p><h4>Reflection</h4><p>P4 proved to be a highly valuable tool for our team. The only significant hurdles were the initial AWS setup and onboarding. Once we were acclimated, P4 helped us maintain a smooth development pace and avoid the complex merge conflicts that had previously delayed our releases.</p>
