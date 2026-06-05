@@ -3,7 +3,7 @@
     {
       "UnitID": "archer_01",
       "Name": "Archer",
-      "Description": "A ranged unit that shoots arrows.",
+      "Description": "Attack: Shoots an arrow projectile Ability: None",
       "Cost": 1,
       "Health": 20,
       "Range": 14,
@@ -15,13 +15,14 @@
       "AttackType": "Projectile",
       "LaunchAngle": 60,
       "Faction": "Fantasy",
-      "PrefabPath": "Prefabs/Units/archer_01",
-      "Rarity": "Common"
+      "PrefabPath": "Prefabs/Units/ ",
+      "Rarity": "Common",
+      "Archetype": "Ranged"
     },
     {
       "UnitID": "foot_01",
       "Name": "Foot trooper",
-      "Description": "Simple rifle attack, Ability: throws a AOE explosive",
+      "Description": "Attack: Fires a bullet down the lane Ability: Throws an AoE damage grenade",
       "Cost": 1,
       "Health": 20,
       "Range": 14,
@@ -34,12 +35,13 @@
       "LaunchAngle": 60,
       "Faction": "Modern",
       "PrefabPath": "Prefabs/Units/foot_01",
-      "Rarity": "Common"
+      "Rarity": "Common",
+      "Archetype": "Ranged"
     },
     {
       "UnitID": "laser_01",
       "Name": "Laser trooper",
-      "Description": "Fires laser that hits all in lane low damage, Ability: Enhanced Attack",
+      "Description": "Attack: Fires a piercing laser Ability: Fires an enhanced laser",
       "Cost": 1,
       "Health": 20,
       "Range": 14,
@@ -48,16 +50,17 @@
       "AbilityPower": 25,
       "AbilityManaCost": 30,
       "StartingMana": 0,
-      "AttackType": "None",
+      "AttackType": "Projectile",
       "LaunchAngle": 60,
       "Faction": "Future",
       "PrefabPath": "Prefabs/Units/laser_01",
-      "Rarity": "Common"
+      "Rarity": "Common",
+      "Archetype": "Ranged"
     },
     {
       "UnitID": "mino_01",
       "Name": "Minotaur",
-      "Description": "Knocks back enemies Ability: Enhanced knockback",
+      "Description": "Attack: Performs an axe swipe that knocks enemies back Ability: Powerful blow that knocks enemies back further",
       "Cost": 1,
       "Health": 20,
       "Range": 1,
@@ -70,12 +73,13 @@
       "LaunchAngle": 0,
       "Faction": "Mystic",
       "PrefabPath": "Prefabs/Units/mino_01",
-      "Rarity": "Common"
+      "Rarity": "Common",
+      "Archetype": "Melee"
     },
     {
       "UnitID": "riot_01",
       "Name": "Riot Control",
-      "Description": "Melee attack Ability: Knocks back enemy",
+      "Description": "Attack: Performs a melee attack Ability: Knocks back all enemies in front",
       "Cost": 1,
       "Health": 20,
       "Range": 1,
@@ -88,12 +92,13 @@
       "LaunchAngle": 60,
       "Faction": "Modern",
       "PrefabPath": "Prefabs/Units/riot_01",
-      "Rarity": "Common"
+      "Rarity": "Common",
+      "Archetype": "Melee"
     },
     {
       "UnitID": "rock_01",
       "Name": "Rock Man",
-      "Description": "Ranged Ability: Enhanced attack with slow",
+      "Description": "Attack: Throws a rock Ability: Throws a massive rock dealing double damage and slowing enemies",
       "Cost": 1,
       "Health": 20,
       "Range": 14,
@@ -106,12 +111,13 @@
       "LaunchAngle": 60,
       "Faction": "Prehistoric",
       "PrefabPath": "Prefabs/Units/rock_01",
-      "Rarity": "Common"
+      "Rarity": "Common",
+      "Archetype": "Ranged"
     },
     {
       "UnitID": "stick_01",
       "Name": "Stick",
-      "Description": "Quick melee attacks Ability: Longer range attack",
+      "Description": "Attack: Quick melee attack that knocks back Ability: Enhanced melee attack with bonus damage and range",
       "Cost": 1,
       "Health": 20,
       "Range": 1.5,
@@ -124,17 +130,18 @@
       "LaunchAngle": 60,
       "Faction": "Prehistoric",
       "PrefabPath": "Prefabs/Units/stick_01",
-      "Rarity": "Common"
+      "Rarity": "Common",
+      "Archetype": "Melee"
     },
     {
       "UnitID": "unic_01",
       "Name": "Unicorn",
-      "Description": "Heals lowest health ally, Ability: Enhanced Heal",
+      "Description": "Attack: Heals the lowest health ally Ability: Enhanced heal to lowest health ally",
       "Cost": 1,
       "Health": 20,
       "Range": 14,
       "AttackSpeed": 0.25,
-      "AttackDamage": 13,
+      "AttackDamage": 0,
       "AbilityPower": 50,
       "AbilityManaCost": 30,
       "StartingMana": 0,
@@ -142,30 +149,13 @@
       "LaunchAngle": 60,
       "Faction": "Mystic",
       "PrefabPath": "Prefabs/Units/unic_01",
-      "Rarity": "Common"
-    },
-    {
-      "UnitID": "xeno_01",
-      "Name": "Xenomorph",
-      "Description": "extends tail 2 tiles doing piercing damage, next applies the facehugger effect aka summing zombie",
-      "Cost": 1,
-      "Health": 20,
-      "Range": 5,
-      "AttackSpeed": 1,
-      "AttackDamage": 10,
-      "AbilityPower": 25,
-      "AbilityManaCost": 30,
-      "StartingMana": 0,
-      "AttackType": "Projectile",
-      "LaunchAngle": 60,
-      "Faction": "Cosmic",
-      "PrefabPath": "Prefabs/Units/xeno_01",
-      "Rarity": "Common"
+      "Rarity": "Uncommon",
+      "Archetype": "Support"
     },
     {
       "UnitID": "boomer_01",
       "Name": "Boomeranger",
-      "Description": "Throws 1-3  boomerang projectiles . Ability: Attack that Applies a slow on hit.",
+      "Description": "Attack: Throws a random number of boomerang projectiles Ability: Large boomerang that slows",
       "Cost": 8,
       "Health": 20,
       "Range": 14,
@@ -178,12 +168,13 @@
       "LaunchAngle": 60,
       "Faction": "Prehistoric",
       "PrefabPath": "Prefabs/Units/boomer_01",
-      "Rarity": "Common"
+      "Rarity": "Epic",
+      "Archetype": "Ranged"
     },
     {
       "UnitID": "bounty_01",
       "Name": "Bounty Hunter",
-      "Description": "Targets highest health character, Ability: Throws shock grenade at target",
+      "Description": "Attack: Shoots at the highest health enemy Ability: Throws a shock grenade that slows on hit",
       "Cost": 8,
       "Health": 20,
       "Range": 20,
@@ -196,12 +187,13 @@
       "LaunchAngle": 60,
       "Faction": "Cosmic",
       "PrefabPath": "Prefabs/Units/bounty_01",
-      "Rarity": "Common"
+      "Rarity": "Epic",
+      "Archetype": "Ranged"
     },
     {
       "UnitID": "mech_01",
       "Name": "Mech",
-      "Description": "Has melee and laser Attacks, Ability: Airstrikes random tiles infront ",
+      "Description": "Attack: Strikes with a melee attack or fires a piercing laser Ability: Calls an airstrike to an empty tile",
       "Cost": 8,
       "Health": 20,
       "Range": 14,
@@ -214,12 +206,13 @@
       "LaunchAngle": 0,
       "Faction": "Future",
       "PrefabPath": "Prefabs/Units/mech_01",
-      "Rarity": "Epic"
+      "Rarity": "Epic",
+      "Archetype": "Melee"
     },
     {
       "UnitID": "amini_01",
-      "Name": "Minigun ",
-      "Description": "Shoots rapidly until overheat Ability: ignores overheat for 5 seconds",
+      "Name": "Minigun",
+      "Description": "Attack: Fires rapid bullets until overheating Ability: Increased fire rate, while ignoring heat",
       "Cost": 8,
       "Health": 20,
       "Range": 14,
@@ -232,12 +225,13 @@
       "LaunchAngle": 60,
       "Faction": "Modern",
       "PrefabPath": "Prefabs/Units/amini_01",
-      "Rarity": "Epic"
+      "Rarity": "Epic",
+      "Archetype": "Ranged"
     },
     {
       "UnitID": "orc_01",
       "Name": "Orc ",
-      "Description": "Has ranged and melee attacks, Ability: Attack Speed buff",
+      "Description": "Attack: Performs a melee attack or axe toss Ability: Buffs attack speed temporarily",
       "Cost": 8,
       "Health": 20,
       "Range": 14,
@@ -250,12 +244,13 @@
       "LaunchAngle": 60,
       "Faction": "Fantasy",
       "PrefabPath": "Prefabs/Units/orc_01",
-      "Rarity": "Epic"
+      "Rarity": "Epic",
+      "Archetype": "Melee"
     },
     {
       "UnitID": "drag_01",
       "Name": "Dragon",
-      "Description": "Shoots Fireballs, Ability: Sets all enemies on fire",
+      "Description": "Attack: Shoots fireballs that apply burn on hit Ability: Burns all enemies on the board",
       "Cost": 15,
       "Health": 20,
       "Range": 14,
@@ -268,17 +263,18 @@
       "LaunchAngle": 0,
       "Faction": "Fantasy",
       "PrefabPath": "Prefabs/Units/drag_01",
-      "Rarity": "Epic"
+      "Rarity": "Legendary",
+      "Archetype": "Ranged"
     },
     {
       "UnitID": "farm_01",
       "Name": "Farmer",
-      "Description": "Generates Currency, Ability: Generate The Onion card",
+      "Description": "Attack: None Ability: Generates currency and adds an Onion to the item inventory",
       "Cost": 15,
       "Health": 20,
       "Range": 0,
       "AttackSpeed": 5,
-      "AttackDamage": 10,
+      "AttackDamage": 0,
       "AbilityPower": 1,
       "AbilityManaCost": 140,
       "StartingMana": 40,
@@ -286,12 +282,13 @@
       "LaunchAngle": 60,
       "Faction": "Prehistoric",
       "PrefabPath": "Prefabs/Units/farm_01",
-      "Rarity": "Epic"
+      "Rarity": "Legendary",
+      "Archetype": "Generator"
     },
     {
       "UnitID": "orbital_01",
       "Name": "Orbital Laser",
-      "Description": "Ability: Summons laser rain that follows enemies",
+      "Description": "Attack: None Ability: Summons a tracking laser rain that follows enemies",
       "Cost": 15,
       "Health": 20,
       "Range": 14,
@@ -304,12 +301,13 @@
       "LaunchAngle": 60,
       "Faction": "Cosmic",
       "PrefabPath": "Prefabs/Units/orbital_01",
-      "Rarity": "Epic"
+      "Rarity": "Legendary",
+      "Archetype": "Ranged"
     },
     {
       "UnitID": "artillery_01",
-      "Name": "artillery ",
-      "Description": "Shoots Aoe Projectile, Ability: Gains Attack Speed",
+      "Name": "Artillery",
+      "Description": "Attack: AoE projectile Ability: Gains attack speed for the remainder of the round",
       "Cost": 5,
       "Health": 20,
       "Range": 14,
@@ -322,12 +320,13 @@
       "LaunchAngle": 60,
       "Faction": "Modern",
       "PrefabPath": "Prefabs/Units/artillery_01",
-      "Rarity": "Epic"
+      "Rarity": "Rare",
+      "Archetype": "Ranged"
     },
     {
       "UnitID": "bow_01",
       "Name": "Bowman",
-      "Description": "Targets highest health character, Ability: Stuns target for 3 seconds",
+      "Description": "Attack: Fires an arrow at the highest health enemy Ability: Shoots an arrow that stuns the target",
       "Cost": 5,
       "Health": 20,
       "Range": 20,
@@ -340,12 +339,13 @@
       "LaunchAngle": 60,
       "Faction": "Prehistoric",
       "PrefabPath": "Prefabs/Units/bow_01",
-      "Rarity": "Epic"
+      "Rarity": "Rare",
+      "Archetype": "Ranged"
     },
     {
       "UnitID": "elec_01",
-      "Name": "electric katana",
-      "Description": "hits front enemy and sends spark going back 1 row at a time, ability applies damage to all enemies on screen",
+      "Name": "Electric Katana",
+      "Description": "Attack: Launches a piercing bolt Ability: Damages all enemies on screen",
       "Cost": 5,
       "Health": 20,
       "Range": 14,
@@ -358,12 +358,13 @@
       "LaunchAngle": 60,
       "Faction": "Future",
       "PrefabPath": "Prefabs/Units/elec_01",
-      "Rarity": "Legendary"
+      "Rarity": "Rare",
+      "Archetype": "Ranged"
     },
     {
       "UnitID": "nest_01",
       "Name": "Facehugger",
-      "Description": "Ability: Summons facehugger that slows and damages over time",
+      "Description": "Attack: None Ability: Summons facehugger that attaches to the first enemy in the same lane, slowing and damaging them",
       "Cost": 5,
       "Health": 20,
       "Range": 0,
@@ -376,30 +377,32 @@
       "LaunchAngle": 0,
       "Faction": "Cosmic",
       "PrefabPath": "Prefabs/Units/nest_01",
-      "Rarity": "Legendary"
+      "Rarity": "Rare",
+      "Archetype": "Generator"
     },
     {
       "UnitID": "fairy_01",
       "Name": "Fairy",
-      "Description": "Ability: Heals lowest health friendly that generates currency with overhealing",
+      "Description": "Attack: Generates currency Ability: Heals lowest health ally and generates currency for any excess healing",
       "Cost": 5,
       "Health": 20,
-      "Range": 14,
+      "Range": 1,
       "AttackSpeed": 0.25,
-      "AttackDamage": 10,
+      "AttackDamage": 0,
       "AbilityPower": 50,
       "AbilityManaCost": 30,
       "StartingMana": 0,
-      "AttackType": "None",
+      "AttackType": "Melee",
       "LaunchAngle": 60,
       "Faction": "Mystic",
       "PrefabPath": "Prefabs/Units/fairy_01",
-      "Rarity": "Legendary"
+      "Rarity": "Rare",
+      "Archetype": "Support"
     },
     {
       "UnitID": "martian_01",
-      "Name": "Martian ",
-      "Description": "Shoots confusion ray low damage applies slow, Ability: Executes Enemy at 30% hp",
+      "Name": "Martian",
+      "Description": "Attack: Shoots a confusion ray that slows enemies Ability: Executes low health enemies",
       "Cost": 5,
       "Health": 20,
       "Range": 14,
@@ -412,12 +415,13 @@
       "LaunchAngle": 0,
       "Faction": "Cosmic",
       "PrefabPath": "Prefabs/Units/martian_01",
-      "Rarity": "Legendary"
+      "Rarity": "Rare",
+      "Archetype": "Ranged"
     },
     {
       "UnitID": "snip_01",
       "Name": "Sniper",
-      "Description": "Targets highest health character, Ability: Applies weakness",
+      "Description": "Attack: Shoots at the highest health enemy Ability: Shoots a bullet that decreases enemies' damage temporarily",
       "Cost": 5,
       "Health": 20,
       "Range": 14,
@@ -430,12 +434,13 @@
       "LaunchAngle": 60,
       "Faction": "Modern",
       "PrefabPath": "Prefabs/Units/snip_01",
-      "Rarity": "Legendary"
+      "Rarity": "Rare",
+      "Archetype": "Ranged"
     },
     {
       "UnitID": "tre_01",
       "Name": "Trebuchet ",
-      "Description": "Fires 2 projectiles, Ability: Burst Attack",
+      "Description": "Attack: Fires heavy projectiles at the nearest enemies Ability: Fires a burst of projectiles at multiple enemies",
       "Cost": 5,
       "Health": 20,
       "Range": 14,
@@ -448,17 +453,37 @@
       "LaunchAngle": 60,
       "Faction": "Fantasy",
       "PrefabPath": "Prefabs/Units/tre_01",
-      "Rarity": "Rare"
+      "Rarity": "Rare",
+      "Archetype": "Ranged"
+    },
+    {
+      "UnitID": "firem_01",
+      "Name": "Firemaker",
+      "Description": "Attack: Applies a temporary fire buff to all adjacent units Ability: Applies multiple fire buffs to all adjacent units",
+      "Cost": 5,
+      "Health": 20,
+      "Range": 14,
+      "AttackSpeed": 1,
+      "AttackDamage": 0,
+      "AbilityPower": 50,
+      "AbilityManaCost": 30,
+      "StartingMana": 0,
+      "AttackType": "None",
+      "LaunchAngle": 60,
+      "Faction": "Prehistoric",
+      "PrefabPath": "Prefabs/Units/firem_01",
+      "Rarity": "Rare",
+      "Archetype": "Support"
     },
     {
       "UnitID": "firep_01",
-      "Name": "Fire priestess ",
-      "Description": "Gives an adjacent ally fire onhit, Ability: Generates currency based on fire on board",
+      "Name": "Fire Priestess",
+      "Description": "Attack: Applies a round long fire buff to a random adjacent unit Ability: Generates currency based on # of enemies on fire",
       "Cost": 3,
       "Health": 20,
       "Range": 14,
       "AttackSpeed": 1,
-      "AttackDamage": 10,
+      "AttackDamage": 0,
       "AbilityPower": 50,
       "AbilityManaCost": 30,
       "StartingMana": 0,
@@ -466,12 +491,13 @@
       "LaunchAngle": 60,
       "Faction": "Mystic",
       "PrefabPath": "Prefabs/Units/firep_01",
-      "Rarity": "Rare"
+      "Rarity": "Uncommon",
+      "Archetype": "Support"
     },
     {
       "UnitID": "gen_01",
       "Name": "Generator",
-      "Description": "Ability: Generates Currency based",
+      "Description": "Attack: None Ability: Generates currency",
       "Cost": 3,
       "Health": 20,
       "Range": 0,
@@ -484,12 +510,13 @@
       "LaunchAngle": 0,
       "Faction": "Modern",
       "PrefabPath": "Prefabs/Units/gen_01",
-      "Rarity": "Rare"
+      "Rarity": "Uncommon",
+      "Archetype": "Generator"
     },
     {
       "UnitID": "hero_01",
       "Name": "Hero",
-      "Description": "at far range shoots bow otherwise has sword for close, Ability: Buffs Column with Attack Speed",
+      "Description": "Attack: Performs a sword swipe at close range, or shoots a bow at far range Ability: Applies an attack speed buff to all units in its column",
       "Cost": 3,
       "Health": 20,
       "Range": 14,
@@ -502,17 +529,37 @@
       "LaunchAngle": 0,
       "Faction": "Fantasy",
       "PrefabPath": "Prefabs/Units/hero_01",
-      "Rarity": "Rare"
+      "Rarity": "Uncommon",
+      "Archetype": "Ranged"
+    },
+    {
+      "UnitID": "seer_01",
+      "Name": "Seer",
+      "Description": "Attack: Gives a random ally mana Ability: Clones a random ally and places it in the unit inventory",
+      "Cost": 8,
+      "Health": 20,
+      "Range": 3,
+      "AttackSpeed": 0.4,
+      "AttackDamage": 0,
+      "AbilityPower": 25,
+      "AbilityManaCost": 60,
+      "StartingMana": 0,
+      "AttackType": "Projectile",
+      "LaunchAngle": 60,
+      "Faction": "Fantasy",
+      "PrefabPath": "Prefabs/Units/seer_01",
+      "Rarity": "Epic",
+      "Archetype": "Support"
     },
     {
       "UnitID": "spores_01",
-      "Name": "spores ",
-      "Description": "Shoots penetrating attack: Ability: Ability Power enhanced attack",
+      "Name": "Spores",
+      "Description": "Attack: None Ability: Shoots penetrating fumes towards enemies in front of it",
       "Cost": 3,
       "Health": 20,
       "Range": 14,
       "AttackSpeed": 0.75,
-      "AttackDamage": 10,
+      "AttackDamage": 0,
       "AbilityPower": 25,
       "AbilityManaCost": 30,
       "StartingMana": 0,
@@ -520,17 +567,18 @@
       "LaunchAngle": 60,
       "Faction": "Cosmic",
       "PrefabPath": "Prefabs/Units/spores_01",
-      "Rarity": "Rare"
+      "Rarity": "Uncommon",
+      "Archetype": "Ranged"
     },
     {
       "UnitID": "squire_01",
-      "Name": "squire ",
-      "Description": "Gives random buffs to random adjacent ally Ability: Applies to all allies",
+      "Name": "Squire",
+      "Description": "Attack: Buffs a random adjacent unit's attack speed temporarily Ability: Buffs all adjacent units' attack speed temporarily",
       "Cost": 3,
       "Health": 20,
       "Range": 1,
       "AttackSpeed": 0.5,
-      "AttackDamage": 12,
+      "AttackDamage": 0,
       "AbilityPower": 25,
       "AbilityManaCost": 30,
       "StartingMana": 0,
@@ -538,12 +586,13 @@
       "LaunchAngle": 60,
       "Faction": "Fantasy",
       "PrefabPath": "Prefabs/Units/squire_01",
-      "Rarity": "Rare"
+      "Rarity": "Uncommon",
+      "Archetype": "Support"
     },
     {
       "UnitID": "stim_01",
       "Name": "Stim-bot",
-      "Description": "Buffs AS of ally Infront Ability: Gives adjacent column allies AS",
+      "Description": "Attack: Buffs the ally to its right with temporary attack speed Ability: Buffs allies above and below it with temporary attack speed",
       "Cost": 3,
       "Health": 20,
       "Range": 1,
@@ -556,12 +605,13 @@
       "LaunchAngle": 60,
       "Faction": "Future",
       "PrefabPath": "Prefabs/Units/stim_01",
-      "Rarity": "Rare"
+      "Rarity": "Uncommon",
+      "Archetype": "Support"
     },
     {
       "UnitID": "wiz_01",
       "Name": "Wizard",
-      "Description": "Shoots Aoe fireball, Ability: player selects enemy to turn into sheep ",
+      "Description": "Attack: Shoots an AoE fireball Ability: Turns targeted enemy into a sheep",
       "Cost": 3,
       "Health": 20,
       "Range": 14,
@@ -574,7 +624,8 @@
       "LaunchAngle": 0,
       "Faction": "Fantasy",
       "PrefabPath": "Prefabs/Units/wiz_01",
-      "Rarity": "Rare"
+      "Rarity": "Uncommon",
+      "Archetype": "Ranged"
     },
     {
       "UnitID": "alch_01",
@@ -592,7 +643,8 @@
       "LaunchAngle": 60,
       "Faction": "Mystic",
       "PrefabPath": "Prefabs/Units/alch_01",
-      "Rarity": "Rare"
+      "Rarity": "Common",
+      "Archetype": "Ranged"
     },
     {
       "UnitID": "land_01",
@@ -610,7 +662,8 @@
       "LaunchAngle": 60,
       "Faction": "Modern",
       "PrefabPath": "Prefabs/Units/land_01",
-      "Rarity": "Rare"
+      "Rarity": "Common",
+      "Archetype": "Generator"
     },
     {
       "UnitID": "drone_01",
@@ -628,7 +681,8 @@
       "LaunchAngle": 60,
       "Faction": "Future",
       "PrefabPath": "Prefabs/Units/drone_01",
-      "Rarity": "Rare"
+      "Rarity": "Epic",
+      "Archetype": "Melee"
     },
     {
       "UnitID": "magic_01",
@@ -646,25 +700,8 @@
       "LaunchAngle": 60,
       "Faction": "Mystic",
       "PrefabPath": "Prefabs/Units/magic_01",
-      "Rarity": "Rare"
-    },
-    {
-      "UnitID": "seer_01",
-      "Name": "Seer",
-      "Description": "gives random ally # mana, ability gives a duplicate item (adds # number of copies of tower into deck)",
-      "Cost": 8,
-      "Health": 20,
-      "Range": 3,
-      "AttackSpeed": 0.4,
-      "AttackDamage": 10,
-      "AbilityPower": 25,
-      "AbilityManaCost": 60,
-      "StartingMana": 0,
-      "AttackType": "Projectile",
-      "LaunchAngle": 60,
-      "Faction": "Fantasy",
-      "PrefabPath": "Prefabs/Units/seer_01",
-      "Rarity": "Uncommon"
+      "Rarity": "Epic",
+      "Archetype": "Ranged"
     },
     {
       "UnitID": "rods_01",
@@ -682,7 +719,8 @@
       "LaunchAngle": 60,
       "Faction": "Modern",
       "PrefabPath": "Prefabs/Units/rods_01",
-      "Rarity": "Uncommon"
+      "Rarity": "Legendary",
+      "Archetype": "Ranged"
     },
     {
       "UnitID": "drums_01",
@@ -700,7 +738,8 @@
       "LaunchAngle": 60,
       "Faction": "Prehistoric",
       "PrefabPath": "Prefabs/Units/drums_01",
-      "Rarity": "Uncommon"
+      "Rarity": "Legendary",
+      "Archetype": "Ranged"
     },
     {
       "UnitID": "crypto_01",
@@ -718,25 +757,8 @@
       "LaunchAngle": 60,
       "Faction": "Future",
       "PrefabPath": "Prefabs/Units/crypto_01",
-      "Rarity": "Uncommon"
-    },
-    {
-      "UnitID": "firem_01",
-      "Name": "Firemaker",
-      "Description": "Gives surrounding units Fire Onhit, Ability: Gives 5 fire onHit stacks",
-      "Cost": 5,
-      "Health": 20,
-      "Range": 14,
-      "AttackSpeed": 1,
-      "AttackDamage": 10,
-      "AbilityPower": 50,
-      "AbilityManaCost": 30,
-      "StartingMana": 0,
-      "AttackType": "None",
-      "LaunchAngle": 60,
-      "Faction": "Prehistoric",
-      "PrefabPath": "Prefabs/Units/firem_01",
-      "Rarity": "Uncommon"
+      "Rarity": "Rare",
+      "Archetype": "Generator"
     },
     {
       "UnitID": "jest_01",
@@ -754,7 +776,8 @@
       "LaunchAngle": 60,
       "Faction": "Mystic",
       "PrefabPath": "Prefabs/Units/jest_01",
-      "Rarity": "Uncommon"
+      "Rarity": "Rare",
+      "Archetype": "Ranged"
     },
     {
       "UnitID": "mgcswrd_01",
@@ -772,7 +795,8 @@
       "LaunchAngle": 60,
       "Faction": "Fantasy",
       "PrefabPath": "Prefabs/Units/mgcswrd_01",
-      "Rarity": "Uncommon"
+      "Rarity": "Rare",
+      "Archetype": "Ranged"
     },
     {
       "UnitID": "baba_01",
@@ -790,7 +814,8 @@
       "LaunchAngle": 60,
       "Faction": "Mystic",
       "PrefabPath": "Prefabs/Units/baba_01",
-      "Rarity": "Uncommon"
+      "Rarity": "Uncommon",
+      "Archetype": "Support"
     },
     {
       "UnitID": "gnome_01",
@@ -808,7 +833,27 @@
       "LaunchAngle": 60,
       "Faction": "Mystic",
       "PrefabPath": "Prefabs/Units/gnome_01",
-      "Rarity": "Uncommon"
+      "Rarity": "Uncommon",
+      "Archetype": "Ranged"
+    },
+    {
+      "UnitID": "xeno_01",
+      "Name": "Xenomorph",
+      "Description": "extends tail 2 tiles doing piercing damage, next applies the facehugger effect aka summing zombie",
+      "Cost": 1,
+      "Health": 20,
+      "Range": 5,
+      "AttackSpeed": 1,
+      "AttackDamage": 10,
+      "AbilityPower": 25,
+      "AbilityManaCost": 30,
+      "StartingMana": 0,
+      "AttackType": "Projectile",
+      "LaunchAngle": 60,
+      "Faction": "Cosmic",
+      "PrefabPath": "Prefabs/Units/xeno_01",
+      "Rarity": "Common",
+      "Archetype": "Melee"
     },
     {
       "UnitID": "tank_01",
@@ -826,7 +871,8 @@
       "LaunchAngle": 60,
       "Faction": "Modern",
       "PrefabPath": "Prefabs/Units/tank_01",
-      "Rarity": "Uncommon"
+      "Rarity": "Uncommon",
+      "Archetype": "Ranged"
     }
   ]
 }
