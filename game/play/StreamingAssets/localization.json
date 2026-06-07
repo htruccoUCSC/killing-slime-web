@@ -1,0 +1,498 @@
+{
+  "UI_SETTINGS_TITLE": {
+    "en": "Settings",
+    "es": "Ajustes"
+  },
+  "UI_SETTINGS_CLOSE": {
+    "en": "Close",
+    "es": "Cerrar"
+  },
+  "UI_START_TUTORIAL": {
+    "en": "Start Tutorial",
+    "es": "Iniciar Tutorial"
+  },
+  "UI_START_INFINITE": {
+    "en": "Start Infinite",
+    "es": "Iniciar Infinito"
+  },
+  "UI_HIGH_CONTRAST_ON": {
+    "en": "High Contrast: On",
+    "es": "Alto Contraste: S\u00ed"
+  },
+  "UI_HIGH_CONTRAST_OFF": {
+    "en": "High Contrast: Off",
+    "es": "Alto Contraste: No"
+  },
+  "UI_VOLUME": {
+    "en": "Volume: {0}%",
+    "es": "Volumen: {0}%"
+  },
+  "UI_FULLSCREEN_ON": {
+    "en": "Fullscreen: On",
+    "es": "Pantalla Completa: S\u00ed"
+  },
+  "UI_FULLSCREEN_OFF": {
+    "en": "Fullscreen: Off",
+    "es": "Pantalla Completa: No"
+  },
+  "UI_LANGUAGE_TOGGLE": {
+    "en": "Language: English",
+    "es": "Idioma: Espa\u00f1ol"
+  },
+  "UI_SELECT": {
+    "en": "Select",
+    "es": "Seleccionar"
+  },
+  "UI_REROLL": {
+    "en": "Reroll",
+    "es": "Relanzar"
+  },
+  "UI_REROLL_COST_FORMAT": {
+    "en": "Cost: {0}",
+    "es": "Costo: {0}"
+  },
+  "UI_REROLL_SHOP": {
+    "en": "Reroll Shop",
+    "es": "Relanzar Tienda"
+  },
+  "UI_AUGMENT_DETAILS": {
+    "en": "Augment Details",
+    "es": "Detalles del Aumento"
+  },
+  "UI_DESCRIPTION_HEADER": {
+    "en": "Description",
+    "es": "Descripci\u00f3n"
+  },
+  "UI_COST_HEADER": {
+    "en": "Cost",
+    "es": "Costo"
+  },
+  "UI_RESTART": {
+    "en": "Restart",
+    "es": "Reiniciar"
+  },
+  "UI_GAME_OVER": {
+    "en": "Game Over",
+    "es": "Fin del Juego"
+  },
+  "UI_ACCEPT": {
+    "en": "Accept",
+    "es": "Aceptar"
+  },
+  "UI_DENY": {
+    "en": "Deny",
+    "es": "Rechazar"
+  },
+  "UI_NEXT_ROUND": {
+    "en": "Next Round",
+    "es": "Siguiente Ronda"
+  },
+  "UI_TOGGLE_SHOP": {
+    "en": "Toggle Shop",
+    "es": "Alternar Tienda"
+  },
+  "UI_TOGGLE_AUGMENT_SCREEN": {
+    "en": "Toggle Augment Screen",
+    "es": "Alternar Pantalla de Aumentos"
+  },
+  "UI_VIEW_AUGMENTS": {
+    "en": "View Augments",
+    "es": "Ver Aumentos"
+  },
+  "UI_NONE": {
+    "en": "None",
+    "es": "Ninguno"
+  },
+  "UI_NEW_UNIT_HEADER": {
+    "en": "New Unit: {0}",
+    "es": "Nueva Unidad: {0}"
+  },
+  "UI_NEW_UNIT_UNLOCKED": {
+    "en": "New Unit Unlocked: {0}!",
+    "es": "\u00a1Nueva Unidad Desbloqueada: {0}!"
+  },
+  "UI_CONSENT_TITLE": {
+    "en": "Data Collection Consent",
+    "es": "Consentimiento de Datos"
+  },
+  "UI_CONSENT_BODY": {
+    "en": "We collect analytics data to improve your experience. No personal information is stored.",
+    "es": "Recopilamos datos anal\u00edticos para mejorar tu experiencia. No se almacena informaci\u00f3n personal."
+  },
+  "UI_CONSENT_FOOTER": {
+    "en": "We collect analytics data to improve gameplay and balancing.",
+    "es": "Recopilamos datos anal\u00edticos para mejorar la jugabilidad y el equilibrio."
+  },
+  "FACTION_Prehistoric": {
+    "en": "Prehistoric",
+    "es": "Prehist\u00f3rico"
+  },
+  "FACTION_Fantasy": {
+    "en": "Fantasy",
+    "es": "Fantas\u00eda"
+  },
+  "FACTION_Mystic": {
+    "en": "Mystic",
+    "es": "M\u00edstico"
+  },
+  "FACTION_Modern": {
+    "en": "Modern",
+    "es": "Moderno"
+  },
+  "FACTION_Future": {
+    "en": "Future",
+    "es": "Futuro"
+  },
+  "FACTION_Cosmic": {
+    "en": "Cosmic",
+    "es": "C\u00f3smico"
+  },
+  "FACTION_": {
+    "en": "",
+    "es": ""
+  },
+  "RARITY_Common": {
+    "en": "Common",
+    "es": "Com\u00fan"
+  },
+  "RARITY_Uncommon": {
+    "en": "Uncommon",
+    "es": "Poco Com\u00fan"
+  },
+  "RARITY_Rare": {
+    "en": "Rare",
+    "es": "Raro"
+  },
+  "RARITY_Epic": {
+    "en": "Epic",
+    "es": "\u00c9pico"
+  },
+  "RARITY_Legendary": {
+    "en": "Legendary",
+    "es": "Legendario"
+  },
+  "AUGMENT_TEST_NAME": {
+    "en": "Test Augment",
+    "es": "Aumento de Prueba"
+  },
+  "AUGMENT_TEST_DESC": {
+    "en": "Test-only augment.",
+    "es": "Aumento solo para pruebas."
+  },
+  "AUGMENT_APETOGETHERSTRONG_NAME": {
+    "en": "Ape Together Strong",
+    "es": "Simios Juntos Fuertes"
+  },
+  "AUGMENT_APETOGETHERSTRONG_DESC": {
+    "en": "Prehistoric units gain +20% attack speed for each Prehistoric in the same column.",
+    "es": "Las unidades prehist\u00f3ricas ganan +20% de velocidad de ataque por cada unidad prehist\u00f3rica en la misma columna."
+  },
+  "AUGMENT_RESERVEAD_NAME": {
+    "en": "Reserve AD",
+    "es": "AD de Reserva"
+  },
+  "AUGMENT_RESERVEAD_DESC": {
+    "en": "All towers gain +1 attack damage for every 5 gold you currently have.",
+    "es": "Todas las torres ganan +1 de da\u00f1o de ataque por cada 5 de oro que tengas actualmente."
+  },
+  "AUGMENT_RESERVEAS_NAME": {
+    "en": "Reserve AS",
+    "es": "AS de Reserva"
+  },
+  "AUGMENT_RESERVEAS_DESC": {
+    "en": "All towers gain +1 attack speed for every 5 gold you currently have.",
+    "es": "Todas las torres ganan +1 de velocidad de ataque por cada 5 de oro que tengas actualmente."
+  },
+  "AUGMENT_TOTHEMOON_NAME": {
+    "en": "To The Moon",
+    "es": "Hasta la Luna"
+  },
+  "AUGMENT_TOTHEMOON_DESC": {
+    "en": "Gain 8 gold each round for 3 rounds. Max interest increases to 100.",
+    "es": "Gana 8 de oro cada ronda durante 3 rondas. El inter\u00e9s m\u00e1ximo aumenta a 100."
+  },
+  "AUGMENT_LUCKYSHOT_NAME": {
+    "en": "Lucky Shot",
+    "es": "Tiro de la Suerte"
+  },
+  "AUGMENT_LUCKYSHOT_DESC": {
+    "en": "On hit: attacks have a 10% chance to fire twice.",
+    "es": "Al impactar: los ataques tienen un 10% de probabilidad de disparar dos veces."
+  },
+  "AUGMENT_UNIQUE_NAME": {
+    "en": "Unique",
+    "es": "\u00danico"
+  },
+  "AUGMENT_UNIQUE_DESC": {
+    "en": "Units with no nearby ally from their own era gain 3x attack speed, 3x attack damage, and +50 ability power.",
+    "es": "Las unidades sin aliados cercanos de su misma era ganan 3x de velocidad de ataque, 3x de da\u00f1o de ataque y +50 de poder de habilidad."
+  },
+  "AUGMENT_OLDSCHOOL_NAME": {
+    "en": "OldSchool",
+    "es": "Vieja Escuela"
+  },
+  "AUGMENT_OLDSCHOOL_DESC": {
+    "en": "Fantasy, Prehistoric, and Mystic units gain +30 AP for each adjacent ally of the same era.",
+    "es": "Las unidades de fantas\u00eda, prehist\u00f3ricas y m\u00edsticas ganan +30 AP por cada aliado adyacente de la misma era."
+  },
+  "AUGMENT_LONGGAME_NAME": {
+    "en": "LongGame",
+    "es": "Juego Largo"
+  },
+  "AUGMENT_LONGGAME_DESC": {
+    "en": "All units gain +0.1x AP per round since this was taken. Future units also gain +50 AP.",
+    "es": "Todas las unidades ganan +0.1x AP por cada ronda transcurrida desde que se tom\u00f3 este aumento. Las unidades del futuro tambi\u00e9n ganan +50 AP."
+  },
+  "AUGMENT_WILDFIRE_NAME": {
+    "en": "Wildfire",
+    "es": "Incendio Forestal"
+  },
+  "AUGMENT_WILDFIRE_DESC": {
+    "en": "All attacks apply burn on hit.",
+    "es": "Todos los ataques aplican quemadura al impactar."
+  },
+  "AUGMENT_EXPOSURE_NAME": {
+    "en": "Exposure",
+    "es": "Exposici\u00f3n"
+  },
+  "AUGMENT_EXPOSURE_DESC": {
+    "en": "Enemies take +5% increased damage when hit.",
+    "es": "Los enemigos reciben +5% de da\u00f1o aumentado al ser impactados."
+  },
+  "AUGMENT_LUCRATIVEPROFESSION_NAME": {
+    "en": "Lucrative Profession",
+    "es": "Profesi\u00f3n Lucrativa"
+  },
+  "AUGMENT_LUCRATIVEPROFESSION_DESC": {
+    "en": "Bounty Hunters gain +1 gold every 5 kills.",
+    "es": "Los cazadores de recompensas ganan +1 de oro por cada 5 eliminaciones."
+  },
+  "AUGMENT_CLASTROPHOBIC_NAME": {
+    "en": "Clastrophobic",
+    "es": "Claustrof\u00f3bico"
+  },
+  "AUGMENT_CLASTROPHOBIC_DESC": {
+    "en": "Units gain attack speed, attack damage, and ability power for each empty column. Scales with round.",
+    "es": "Las unidades ganan velocidad de ataque, da\u00f1o de ataque y poder de habilidad por cada columna vac\u00eda. Se escala con la ronda."
+  },
+  "AUGMENT_RALLY_NAME": {
+    "en": "Rally",
+    "es": "Reagrupamiento"
+  },
+  "AUGMENT_RALLY_DESC": {
+    "en": "Melee units gain +1 range for each melee ally directly in front of them.",
+    "es": "Las unidades cuerpo a cuerpo ganan +1 de rango por cada aliado cuerpo a cuerpo directamente frente a ellas."
+  },
+  "AUGMENT_SCOPED_NAME": {
+    "en": "Scoped",
+    "es": "Con Mira"
+  },
+  "AUGMENT_SCOPED_DESC": {
+    "en": "All ranged units gain +30 attack damage.",
+    "es": "Todas las unidades a distancia ganan +30 de da\u00f1o de ataque."
+  },
+  "AUGMENT_OVERWORK_NAME": {
+    "en": "Overwork",
+    "es": "Sobreesfuerzo"
+  },
+  "AUGMENT_OVERWORK_DESC": {
+    "en": "All units deal 3x damage but lose 1 health each attack.",
+    "es": "Todas las unidades infligen 3x de da\u00f1o pero pierden 1 de vida en cada ataque."
+  },
+  "AUGMENT_QUICKSTART_NAME": {
+    "en": "Quick Start",
+    "es": "Inicio R\u00e1pido"
+  },
+  "AUGMENT_QUICKSTART_DESC": {
+    "en": "All units start the round with their ability ready.",
+    "es": "Todas las unidades comienzan la ronda con su habilidad lista."
+  },
+  "AUGMENT_DIVERSITY_NAME": {
+    "en": "Gone Woke",
+    "es": "Diversidad"
+  },
+  "AUGMENT_DIVERSITY_DESC": {
+    "en": "Rows with 3 or more different factions gain 1.3x attack speed.",
+    "es": "Las columnas con 3 o m\u00e1s facciones diferentes ganan 1.3x de velocidad de ataque."
+  },
+  "AUGMENT_AP_NAME": {
+    "en": "AP Escalation",
+    "es": "Escalada de AP"
+  },
+  "AUGMENT_AP_DESC": {
+    "en": "Each ability cast grants +1 AP to all towers for the remainder of the round.",
+    "es": "Cada lanzamiento de habilidad otorga +1 AP a todas las torres para la resta de la ronda."
+  },
+  "AUGMENT_TIMESPIRAL_NAME": {
+    "en": "Time Spiral",
+    "es": "Espiral del Tiempo"
+  },
+  "AUGMENT_TIMESPIRAL_DESC": {
+    "en": "Every second, all units gain +2 AD and +2 AP for the remainder of the round.",
+    "es": "Cada segundo, todas las unidades ganan +2 de AD y +2 de AP para la resta de la ronda."
+  },
+  "AUGMENT_PANICCC_NAME": {
+    "en": "PANICCC!!!",
+    "es": "\u00a1\u00a1\u00a1P\u00c1NICO!!!"
+  },
+  "AUGMENT_PANICCC_DESC": {
+    "en": "When a tower dies, all towers permanently gain +1 AD, +0.05 AS, and +1 AP.",
+    "es": "Cuando una torre muere, todas las torres ganan permanentemente +1 de AD, +0.05 de AS y +1 de AP."
+  },
+  "AUGMENT_WHATEVERDOESNTKILLYOU_NAME": {
+    "en": "Whatever Doesn't Kill You",
+    "es": "Lo que no te mata"
+  },
+  "AUGMENT_WHATEVERDOESNTKILLYOU_DESC": {
+    "en": "Whenever a tower survives damage, it permanently gains +1 health.",
+    "es": "Cada vez que una torre sobrevive al da\u00f1o, gana permanentemente +1 de vida."
+  },
+  "AUGMENT_STRONGAPE_NAME": {
+    "en": "STRONG APE",
+    "es": "SIMIO FUERTE"
+  },
+  "AUGMENT_STRONGAPE_DESC": {
+    "en": "At round start, Prehistoric units gain attack damage equal to 20% of their health.",
+    "es": "Al inicio de la ronda, las unidades prehist\u00f3ricas ganan da\u00f1o de ataque igual al 20% de su vida."
+  },
+  "AUGMENT_STILLRELEVANT_NAME": {
+    "en": "Still Relevant",
+    "es": "Sigue Siendo Relevante"
+  },
+  "AUGMENT_STILLRELEVANT_DESC": {
+    "en": "All units gain +1 AD, +1 AP, and +0.2 AS for each 1-cost unit on the board.",
+    "es": "Todas las unidades ganan +1 de AD, +1 de AP y +0.2 de AS por cada unidad de costo 1 en el tablero."
+  },
+  "AUGMENT_UNCOMMONRELEVANT_NAME": {
+    "en": "Uncommon Buffs",
+    "es": "Mejoras Poco Comunes"
+  },
+  "AUGMENT_UNCOMMONRELEVANT_DESC": {
+    "en": "All units gain +2 AD, +2 AP, and +0.4 AS for each Uncommon unit on the board.",
+    "es": "Todas las unidades ganan +2 de AD, +2 de AP y +0.4 de AS por cada unidad Poco Com\u00fan en el tablero."
+  },
+  "AUGMENT_RARERELEVANT_NAME": {
+    "en": "Rare Buffs",
+    "es": "Mejoras Raras"
+  },
+  "AUGMENT_RARERELEVANT_DESC": {
+    "en": "All units gain +3 AD, +3 AP, and +0.6 AS for each Rare unit on the board.",
+    "es": "Todas las unidades ganan +3 de AD, +3 de AP y +0.6 de AS por cada unidad Rara en el tablero."
+  },
+  "AUGMENT_EPICRELEVANT_NAME": {
+    "en": "Epic Buffs",
+    "es": "Mejoras \u00c9picas"
+  },
+  "AUGMENT_EPICRELEVANT_DESC": {
+    "en": "All units gain +4 AD, +4 AP, and +0.8 AS for each Epic unit on the board.",
+    "es": "Todas las unidades ganan +4 de AD, +4 de AP y +0.8 de AS por cada unidad \u00c9pica en el tablero."
+  },
+  "AUGMENT_LEGENDARYRELEVANT_NAME": {
+    "en": "Legendary feats",
+    "es": "Haza\u00f1as Legendarias"
+  },
+  "AUGMENT_LEGENDARYRELEVANT_DESC": {
+    "en": "All units gain +5 AD, +5 AP, and +1 AS for each Legendary unit on the board.",
+    "es": "Todas las unidades ganan +5 de AD, +5 de AP y +1 de AS por cada unidad Legendaria en el tablero."
+  },
+  "MODIFIER_BLITZKRIEG_NAME": {
+    "en": "Blitzkrieg",
+    "es": "Guerra Relámpago"
+  },
+  "MODIFIER_BLITZKRIEG_DESC": {
+    "en": "Enemies move twice as fast, but arrive with half their normal health.",
+    "es": "Los enemigos se mueven el doble de rápido, pero llegan con la mitad de su vida normal."
+  },
+  "MODIFIER_MANA_TAX_NAME": {
+    "en": "Mana Tax",
+    "es": "Impuesto de Maná"
+  },
+  "MODIFIER_MANA_TAX_DESC": {
+    "en": "Tower abilities require 30% more mana to trigger this round.",
+    "es": "Las habilidades de las torres requieren un 30% más de maná para activarse esta ronda."
+  },
+  "MODIFIER_RECESSION_NAME": {
+    "en": "Recession",
+    "es": "Recesión"
+  },
+  "MODIFIER_RECESSION_DESC": {
+    "en": "No interest is earned on banked gold this round.",
+    "es": "No se ganan intereses sobre el oro acumulado esta ronda."
+  },
+  "MODIFIER_BULWARK_FLAME_NAME": {
+    "en": "Bulwark Flame",
+    "es": "Llama del Baluarte"
+  },
+  "MODIFIER_BULWARK_FLAME_DESC": {
+    "en": "All towers gain 25% more max health. Fire damage is increased by 50%.",
+    "es": "Todas las torres ganan un 25% más de vida máxima. El daño de fuego aumenta en un 50%."
+  },
+  "MODIFIER_SLUGGISH_ARSENAL_NAME": {
+    "en": "Sluggish Arsenal",
+    "es": "Arsenal Lento"
+  },
+  "MODIFIER_SLUGGISH_ARSENAL_DESC": {
+    "en": "All towers attack 10% slower this round.",
+    "es": "Todas las torres atacan un 10% más lento esta ronda."
+  },
+  "TUTORIAL_WELCOME_TITLE": {
+    "en": "Welcome",
+    "es": "Bienvenido"
+  },
+  "TUTORIAL_WELCOME_BODY": {
+    "en": "Welcome to the tutorial! We'll introduce the core systems step by step.",
+    "es": "¡Bienvenido al tutorial! Te presentaremos los sistemas básicos paso a paso."
+  },
+  "TUTORIAL_ENEMY_INTRO_TITLE": {
+    "en": "Enemy Spawns and Lives",
+    "es": "Aparición de Enemigos y Vidas"
+  },
+  "TUTORIAL_ENEMY_INTRO_BODY": {
+    "en": "Enemies spawn from the right side of the map. Watch the preview, then let the wave start. Every enemy that escapes costs you a life, and the run ends when your lives hit zero.",
+    "es": "Los enemigos aparecen por el lado derecho del mapa. Observa la vista previa, luego deja que comience la ronda. Cada enemigo que escape te costará una vida, y la partida termina cuando tus vidas lleguen a cero."
+  },
+  "TUTORIAL_SHOP_INTRO_TITLE": {
+    "en": "Using the Shop",
+    "es": "Uso de la Tienda"
+  },
+  "TUTORIAL_SHOP_INTRO_BODY": {
+    "en": "The shop opens between waves. Click a unit to buy it, drag it into your board, and use reroll if you want a different selection. Spend your gold before the next wave begins.",
+    "es": "La tienda se abre entre rondas. Haz clic en una unidad para comprarla, arrástrala a tu tablero y usa el relanzamiento si deseas una selección diferente. Gasta tu oro antes de que comience la siguiente ronda."
+  },
+  "TUTORIAL_PORTAL_INTRO_TITLE": {
+    "en": "Portals and Portal Levels",
+    "es": "Portales y Niveles de Portal"
+  },
+  "TUTORIAL_PORTAL_INTRO_BODY": {
+    "en": "Defeat all enemies in this wave to unlock a portal. Portal levels are more challenging but reward you with better items and upgrades.",
+    "es": "Derrota a todos los enemigos en esta ronda para desbloquear un portal. Los niveles de portal son más desafiantes pero te recompensan con mejores objetos y mejoras."
+  },
+  "TUTORIAL_AUGMENT_INTRO_TITLE": {
+    "en": "Choosing Augments",
+    "es": "Elección de Aumentos"
+  },
+  "TUTORIAL_AUGMENT_INTRO_BODY": {
+    "en": "Select an augment to permanently enhance your abilities. Each augment has unique effects that can dramatically change your playstyle.",
+    "es": "Selecciona un aumento para mejorar permanentemente tus habilidades. Cada aumento tiene efectos únicos que pueden cambiar drásticamente tu estilo de juego."
+  },
+  "TUTORIAL_ITEMS_INTRO_TITLE": {
+    "en": "Items",
+    "es": "Objetos"
+  },
+  "TUTORIAL_ITEMS_INTRO_BODY": {
+    "en": "Items can be used during battle to give your units temporary boosts. Use them strategically to survive difficult waves.",
+    "es": "Los objetos se pueden usar durante la batalla para otorgar mejoras temporales a tus unidades. Úsalos estratégicamente para sobrevivir a rondas difíciles."
+  },
+  "UI_GAME_TITLE": {
+    "en": "Killing Slime",
+    "es": "Matando Slime"
+  },
+  "UI_ROUND_LABEL": {
+    "en": "Round",
+    "es": "Ronda"
+  },
+  "UI_GOLD_LABEL": {
+    "en": "Gold",
+    "es": "Oro"
+  }
+}
