@@ -1,3 +1,4 @@
 [
-  { "file": "devlogs/devlog1.md", "date": "June 3, 2026", "author": "Sonny", "tags": ["Version Control", "Perfroce", "Devops", "Tutorial"], "featured": true }
+  { "file": "devlogs/devlog1.md", "date": "June 3, 2026", "author": "Sonny Trucco", "tags": ["Version Control", "Perfroce", "Devops", "Tutorial"], "featured": true },
+  { "file": "devlogs/devlog2.md", "date": "June 7, 2026", "author": "Sonny Trucco", "tags": ["Modding", "Tutorial", "Difficulty"], "featured": false }
 ]

@@ -1,8 +1,5 @@
 # Devlog #1: How We Used Perforce's P4 For A Student Project
 
-**Date:** June 3, 2026  
-**Author:** Sonny Trucco
-
 ## Why We Switched
 
 Like most personal and student projects, *Killing Slime* started out using Git hosted on GitHub for version control. While Git is a great version control option, it has weaknesses that are exceedingly noticeable in the space of game development. Git struggles with versioning large binary assets because it is designed to store full file snapshots over time. While this works for small, text-based code files, tiny changes to massive binary files (like 3D models, textures, or Unity scenes) cause the repository's historical data to bloat exponentially. Git does offer a solution to this in the form of Git LFS (Large File Storage). LFS turns large files into pointers and stores them outside of your main repository, only pulling them when a new copy is needed. However, when using it on GitHub, there are bandwidth and storage rate limits applied to free accounts that we eventually exceeded.
